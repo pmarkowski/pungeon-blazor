@@ -1,7 +1,71 @@
 ﻿@page "/dungeonrenderer"
+@using Pungeon.Web.Dungeon
+@using Pungeon.Web.Dungeon.Rendering
 
 <h3>Dungeon Renderer</h3>
 
-@code {
+@if (Error)
+{
+    <div class="alert alert-warning">Couldn't parse your Room json!</div>
+}
 
+<div class="row">
+    <div class="col-md-5 form-group">
+        <textarea
+            class="form-control text-monospace"
+            style="width:100%; height: 100%;"
+            @oninput="RenderRoom"
+            spellcheck="false">@System.Text.Json.JsonSerializer.Serialize(
+                    Room, new System.Text.Json.JsonSerializerOptions()
+                    {
+                        WriteIndented = true
+                    })
+        </textarea>
+    </div>
+    <div class="col-md-7">
+        <pre>@RenderedRoom</pre>
+    </div>
+</div>
+
+@code {
+    private Dungeon.Room Room;
+    private string RenderedRoom;
+    private bool Error = false;
+
+    protected override void OnInitialized()
+    {
+        Room = new Room()
+        {
+            Spaces = new System.Collections.Generic.List<Space>()
+            {
+                new Space()
+                {
+                    RelativePosition = new Position(1, 1),
+                    Size = new Size(5, 5)
+                },
+                new Space()
+                {
+                    RelativePosition = new Position(6, 4),
+                    Size = new Size(7, 9)
+                }
+            }
+        };
+
+        RenderedRoom = AsciiRenderer.Render(Room);
+    }
+
+    private void RenderRoom(ChangeEventArgs args)
+    {
+        try
+        {
+            string roomJson = args.Value.ToString();
+            Room = System.Text.Json.JsonSerializer.Deserialize<Dungeon.Room>(roomJson);
+            RenderedRoom = AsciiRenderer.Render(Room);
+            Error = false;
+        }
+        catch
+        {
+            Error = true;
+        }
+    }
 }
