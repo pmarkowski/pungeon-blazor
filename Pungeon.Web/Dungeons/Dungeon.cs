@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pungeon.Web.Dungeons
 {
@@ -7,14 +8,14 @@ namespace Pungeon.Web.Dungeons
     {
         public List<DungeonRoom> Rooms { get; set; }
 
-        internal int GetHeight()
+        public int GetWidth()
         {
-            throw new NotImplementedException();
+            return Rooms.Max(room => room.RelativePosition.X + room.Room.GetWidth());
         }
 
-        internal int GetWidth()
+        public int GetHeight()
         {
-            throw new NotImplementedException();
+            return Rooms.Max(room => room.RelativePosition.Y + room.Room.GetHeight());
         }
     }
 }
