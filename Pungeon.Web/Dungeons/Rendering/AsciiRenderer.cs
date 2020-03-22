@@ -1,10 +1,20 @@
 using System;
 using System.Text;
 
-namespace Pungeon.Web.Dungeon.Rendering
+namespace Pungeon.Web.Dungeons.Rendering
 {
     public static class AsciiRenderer
     {
+        public static string Render(Dungeon dungeon)
+        {
+            char[,] charGrid = new char[
+                dungeon.GetHeight(),
+                dungeon.GetWidth()
+            ];
+
+            return GridToString(charGrid);
+        }
+
         public static string Render(Room room)
         {
             int padding = 2;

@@ -1,6 +1,6 @@
 ﻿@page "/dungeonrenderer"
-@using Pungeon.Web.Dungeon
-@using Pungeon.Web.Dungeon.Rendering
+@using Pungeon.Web.Dungeons
+@using Pungeon.Web.Dungeons.Rendering
 
 <h3>Dungeon Renderer</h3>
 
@@ -28,7 +28,7 @@
 </div>
 
 @code {
-    private Dungeon.Room Room;
+    private Room Room;
     private string RenderedRoom;
     private bool Error = false;
 
@@ -59,7 +59,7 @@
         try
         {
             string roomJson = args.Value.ToString();
-            Room = System.Text.Json.JsonSerializer.Deserialize<Dungeon.Room>(roomJson);
+            Room = System.Text.Json.JsonSerializer.Deserialize<Room>(roomJson);
             RenderedRoom = AsciiRenderer.Render(Room);
             Error = false;
         }

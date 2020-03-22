@@ -1,4 +1,4 @@
-namespace Pungeon.Web.Dungeon
+namespace Pungeon.Web.Dungeons
 {
     public class Space
     {
