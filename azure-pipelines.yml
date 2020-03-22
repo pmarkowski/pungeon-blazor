@@ -8,4 +8,4 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: './Pungeon.Web/'
+    projects: '.\Pungeon.Web\Pungeon.Web.csproj'
