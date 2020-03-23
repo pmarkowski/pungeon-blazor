@@ -1,50 +1,50 @@
 namespace Pungeon.Web.Dungeons
 {
-    public class Size
+    public class RelativePosition
     {
-        private int _width;
-        private int _height;
+        private int _x;
+        private int _y;
 
-        public int Width
+        public int X
         {
-            get => _width;
+            get => _x;
             set
             {
                 if (value < 0)
                 {
                     throw new System.ArgumentOutOfRangeException(
                         nameof(value),
-                        "Size dimensions may not hold negative values.");
+                        "Relative positions may not hold negative values.");
                 }
 
-                _width = value;
+                _x = value;
             }
         }
 
-        public int Height
+        public int Y
         {
-            get => _height;
+            get => _y;
             set
             {
                 if (value < 0)
                 {
                     throw new System.ArgumentOutOfRangeException(
                         nameof(value),
-                        "Size dimensions may not hold negative values.");
+                        "Relative positions may not hold negative values.");
                 }
 
-                _height = value;
+                _y = value;
             }
         }
 
-        public Size()
+        public RelativePosition()
         {
         }
 
-        public Size(int width, int height)
+        public RelativePosition(int x, int y)
         {
-            Width = width;
-            Height = height;
+            this.X = x;
+            this.Y = y;
         }
     }
 }

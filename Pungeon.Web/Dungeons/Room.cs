@@ -7,14 +7,19 @@ namespace Pungeon.Web.Dungeons
     {
         public List<Space> Spaces { get; set; }
 
+        public Room()
+        {
+            Spaces = new List<Space>();
+        }
+
         public int GetWidth()
         {
-            return Spaces.Max(space => space.RelativePosition.X + space.Size.Width);
+            return Spaces.Any() ? Spaces.Max(space => space.RelativePosition.X + space.Size.Width) : 0;
         }
 
         public int GetHeight()
         {
-            return Spaces.Max(space => space.RelativePosition.Y + space.Size.Height);
+            return Spaces.Any() ? Spaces.Max(space => space.RelativePosition.Y + space.Size.Height) : 0;
         }
     }
 }
