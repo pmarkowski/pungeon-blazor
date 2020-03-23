@@ -7,15 +7,14 @@ namespace Pungeon.Web.Dungeons
 
         public int X
         {
-            get
-            {
-                return _x;
-            }
+            get => _x;
             set
             {
                 if (value < 0)
                 {
-                    throw new System.ArgumentOutOfRangeException(nameof(value), "Relative positions may not hold negative values.");
+                    throw new System.ArgumentOutOfRangeException(
+                        nameof(value),
+                        "Relative positions may not hold negative values.");
                 }
 
                 _x = value;
@@ -24,15 +23,14 @@ namespace Pungeon.Web.Dungeons
 
         public int Y
         {
-            get
-            {
-                return _y;
-            }
+            get => _y;
             set
             {
                 if (value < 0)
                 {
-                    throw new System.ArgumentOutOfRangeException(nameof(value), "Relative positions may not hold negative values.");
+                    throw new System.ArgumentOutOfRangeException(
+                        nameof(value),
+                        "Relative positions may not hold negative values.");
                 }
 
                 _y = value;

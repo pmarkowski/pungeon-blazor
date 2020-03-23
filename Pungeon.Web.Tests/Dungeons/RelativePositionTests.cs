@@ -14,7 +14,7 @@ namespace Pungeon.Web.Tests.Dungeons
         }
 
         [Fact]
-        public void Constructor_PositiveYValue_SetsX()
+        public void Constructor_PositiveYValue_SetsY()
         {
             RelativePosition relativePosition = new RelativePosition(2, 5);
 
