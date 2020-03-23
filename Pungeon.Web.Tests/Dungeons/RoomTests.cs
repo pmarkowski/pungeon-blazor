@@ -14,5 +14,16 @@ namespace Pungeon.Web.Tests.Dungeons
 
             Assert.Equal(0, height);
         }
+
+        
+        [Fact]
+        public void GetWidth_NoSpaces_ReturnsZero()
+        {
+            Room room = new Room();
+
+            int height = room.GetWidth();
+
+            Assert.Equal(0, height);
+        }
     }
 }
