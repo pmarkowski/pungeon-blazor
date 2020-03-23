@@ -15,3 +15,8 @@ steps:
     command: 'test'
     projects: '**.Tests/*.csproj'
     arguments: '--collect:"XPlat Code Coverage"'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '**.Tests/TestResults/*/coverage.cobertura.xml'
