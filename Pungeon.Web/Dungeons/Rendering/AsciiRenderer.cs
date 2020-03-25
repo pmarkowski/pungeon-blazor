@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Pungeon.Web.Dungeons.AStar;
 
 namespace Pungeon.Web.Dungeons.Rendering
 {
@@ -20,7 +23,47 @@ namespace Pungeon.Web.Dungeons.Rendering
                 RenderRoomInGrid(charGrid, room, Padding, Padding);
             }
 
+            foreach (Connection connection in dungeon.Connections)
+            {
+                Connector connector1 = GetConnectorInDungeonSpace(dungeon, connection.ConnectorId1);
+                Connector connector2 = GetConnectorInDungeonSpace(dungeon, connection.ConnectorId2);
+
+                var path = AStarAlgorithm.FindPath(
+                    charGrid,
+                    connector1.RelativePosition,
+                    connector2.RelativePosition);
+
+                HollowOutPathInGrid(charGrid, path);
+            }
+
             return GridToString(charGrid);
+        }
+
+        private static Connector GetConnectorInDungeonSpace(Dungeon dungeon, string connectorId)
+        {
+            return dungeon.Rooms.SelectMany(room =>
+                room.Room.Spaces.SelectMany(space =>
+                    space.Connectors.Select(connector =>
+                        new Connector
+                        {
+                            Id = connector.Id,
+                            RelativePosition = new RelativePosition(
+                                connector.RelativePosition.X + space.RelativePosition.X + room.RelativePosition.X,
+                                connector.RelativePosition.Y + space.RelativePosition.Y + room.RelativePosition.Y
+                            )
+                        })))
+                .Single(connector => connector.Id == connectorId);
+        }
+
+        private static void HollowOutPathInGrid(char[,] charGrid, List<RelativePosition> path)
+        {
+            foreach (RelativePosition position in path)
+            {
+                int y = position.Y;
+                int x = position.X;
+
+                charGrid[y, x] = ' ';
+            }
         }
 
         private static void RenderRoomInGrid(char[,] charGrid, DungeonRoom room, int xOffset, int yOffset)
@@ -35,25 +78,11 @@ namespace Pungeon.Web.Dungeons.Rendering
             }
         }
 
-        public static string Render(Room room)
-        {
-            char[,] charGrid = new char[
-                room.GetHeight() + Padding,
-                room.GetWidth() + Padding];
-            InitializeCharGrid(charGrid);
-
-            foreach (Space space in room.Spaces)
-            {
-                HollowOutSpaceInGrid(charGrid, space);
-            }
-
-            return GridToString(charGrid);
-        }
-        
         private static void HollowOutSpaceInGrid(char[,] charGrid, Space space, int xOffset, int yOffset)
         {
             int yStart = yOffset + space.RelativePosition.Y;
 
+            // TODO: consider renaming these iterators to y and x to have an easier time
             for (int i = yStart; i < yStart + space.Size.Height; i++)
             {
                 int xStart = xOffset + space.RelativePosition.X;
@@ -63,11 +92,6 @@ namespace Pungeon.Web.Dungeons.Rendering
                     charGrid[i, j] = ' ';
                 }
             }
-        }
-
-        private static void HollowOutSpaceInGrid(char[,] charGrid, Space space)
-        {
-            HollowOutSpaceInGrid(charGrid, space, 0, 0);
         }
 
         private static void InitializeCharGrid(char[,] charGrid)

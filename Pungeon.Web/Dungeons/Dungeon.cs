@@ -7,10 +7,12 @@ namespace Pungeon.Web.Dungeons
     public class Dungeon
     {
         public List<DungeonRoom> Rooms { get; set; }
+        public List<Connection> Connections { get; set; }
 
         public Dungeon()
         {
             Rooms = new List<DungeonRoom>();
+            Connections = new List<Connection>();
         }
 
         public int GetWidth()
