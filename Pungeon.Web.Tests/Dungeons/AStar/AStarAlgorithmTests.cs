@@ -95,5 +95,29 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
 
             Assert.Single(path);
         }
+
+        [Fact]
+        public void FindPath_LargeRooms_DoesNotPassSpaces()
+        {
+            char[,] map = new char[,]
+            {
+                { ' ', ' ', ' ', '#', '#' },
+                { ' ', ' ', ' ', '#', '#' },
+                { ' ', ' ', ' ', '#', '#' },
+                { '#', '#', '#', '#', '#' },
+                { '#', '#', '#', '#', '#' },
+                { '#', '#', ' ', ' ', ' ' },
+                { '#', '#', ' ', ' ', ' ' },
+                { '#', '#', ' ', ' ', ' ' },
+            };
+
+            var path = AStarAlgorithm.FindPath(
+                map,
+                new RelativePosition(3, 1),
+                new RelativePosition(1, 6)
+            );
+
+            Assert.Equal(8, path.Count);
+        }
     }
 }

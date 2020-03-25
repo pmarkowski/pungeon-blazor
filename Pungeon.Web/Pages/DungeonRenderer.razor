@@ -5,9 +5,12 @@
 
 <h1>Dungeon Renderer</h1>
 
-@if (Error)
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
 {
-    <div class="alert alert-warning">Couldn't parse your Dungeon JSON!</div>
+    <div class="alert alert-warning">
+        <p>Ran into a problem rendering the Dungeon JSON!</p>
+        <p>@ErrorMessage</p>
+    </div>
 }
 
 <div class="row">
@@ -31,7 +34,7 @@
 @code {
     private Dungeon Dungeon;
     private string RenderedDungeon;
-    private bool Error = false;
+    private string ErrorMessage = string.Empty;
 
     protected override void OnInitialized()
     {
@@ -54,7 +57,15 @@
                             new Space()
                             {
                                 RelativePosition = new RelativePosition(6, 4),
-                                Size = new Size(7, 9)
+                                Size = new Size(7, 9),
+                                Connectors = new List<Connector>()
+                                {
+                                    new Connector()
+                                    {
+                                        Id = "Connector1",
+                                        RelativePosition = new RelativePosition(7, 9)
+                                    }
+                                }
                             }
                         }
                     }
@@ -74,15 +85,39 @@
                             new Space()
                             {
                                 RelativePosition = new RelativePosition(6, 3),
-                                Size = new Size(4, 9)
+                                Size = new Size(4, 9),
+                                Connectors = new List<Connector>()
+                                {
+                                    new Connector()
+                                    {
+                                        Id = "Connector2",
+                                        RelativePosition = new RelativePosition(4, 9)
+                                    }
+                                }
                             }
                         }
                     }
                 }
+            },
+            Connections = new List<Connection>()
+            {
+                new Connection()
+                {
+                    ConnectorId1 = "Connector1",
+                    ConnectorId2 = "Connector2"
+                }
             }
         };
 
-        RenderedDungeon = AsciiRenderer.Render(Dungeon);
+        try
+        {
+            RenderedDungeon = AsciiRenderer.Render(Dungeon);
+            ErrorMessage = string.Empty;
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.ToString();
+        }
     }
 
     private void RenderDungeon(ChangeEventArgs args)
@@ -92,11 +127,11 @@
             string dungeonJson = args.Value.ToString();
             Dungeon = System.Text.Json.JsonSerializer.Deserialize<Dungeon>(dungeonJson);
             RenderedDungeon = AsciiRenderer.Render(Dungeon);
-            Error = false;
+            ErrorMessage = string.Empty;
         }
-        catch
+        catch (Exception e)
         {
-            Error = true;
+            ErrorMessage = e.ToString();
         }
     }
 }
