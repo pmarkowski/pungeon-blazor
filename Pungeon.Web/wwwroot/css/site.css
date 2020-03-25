@@ -117,6 +117,20 @@ app {
     color: red;
 }
 
+.tile-row {
+    clear: left;
+}
+
+    .tile-row .tile {
+        height: 20px;
+        width: 20px;
+        float: left;
+        box-shadow: inset 0px 0px 1px 0px #333333;
+    }
+
+        .tile-row .tile.empty { background-color: #d6d5d5; }
+        .tile-row .tile.full { background-color: #0366d6; }
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

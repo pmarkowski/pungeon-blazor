@@ -12,6 +12,13 @@ namespace Pungeon.Web.Dungeons.Rendering
 
         public static string Render(Dungeon dungeon)
         {
+            char[,] charGrid = RenderDungeonToCharGrid(dungeon);
+
+            return GridToString(charGrid);
+        }
+
+        private static char[,] RenderDungeonToCharGrid(Dungeon dungeon)
+        {
             char[,] charGrid = new char[
                 dungeon.GetHeight() + Padding * 2,
                 dungeon.GetWidth() + Padding * 2
@@ -36,7 +43,13 @@ namespace Pungeon.Web.Dungeons.Rendering
                 HollowOutPathInGrid(charGrid, path);
             }
 
-            return GridToString(charGrid);
+            return charGrid;
+        }
+
+        public static string RenderToHtml(Dungeon dungeon)
+        {
+            char[,] charGrid = RenderDungeonToCharGrid(dungeon);
+            return GridToHtml(charGrid);
         }
 
         private static Connector GetConnectorInDungeonSpace(Dungeon dungeon, string connectorId)
@@ -116,6 +129,37 @@ namespace Pungeon.Web.Dungeons.Rendering
                     builder.Append(charGrid[i, j]);
                 }
                 builder.AppendLine();
+            }
+
+            return builder.ToString();
+        }
+
+        private static string GridToHtml(char[,] charGrid)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            for (int i = 0; i < charGrid.GetLength(0); i++)
+            {
+                builder.Append("<div class='tile-row'>");
+                for (int j = 0; j < charGrid.GetLength(1); j++)
+                {
+                    char tile = charGrid[i, j];
+                    string tileDiv;
+                    switch (tile)
+                    {
+                        case ' ':
+                            tileDiv = "<div class='tile empty'></div>";
+                            builder.Append(tileDiv);
+                            break;
+                        case '#':
+                            tileDiv = "<div class='tile full'></div>";
+                            builder.Append(tileDiv);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                builder.Append("</div>");
             }
 
             return builder.ToString();

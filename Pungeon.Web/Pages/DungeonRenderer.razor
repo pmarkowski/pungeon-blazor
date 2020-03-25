@@ -27,7 +27,9 @@
         </textarea>
     </div>
     <div class="col-md-7">
-        <pre>@RenderedDungeon</pre>
+        <div>
+            @((MarkupString)RenderedDungeon)
+        </div>
     </div>
 </div>
 
@@ -111,7 +113,7 @@
 
         try
         {
-            RenderedDungeon = AsciiRenderer.Render(Dungeon);
+            RenderedDungeon = AsciiRenderer.RenderToHtml(Dungeon);
             ErrorMessage = string.Empty;
         }
         catch (Exception e)
@@ -126,7 +128,7 @@
         {
             string dungeonJson = args.Value.ToString();
             Dungeon = System.Text.Json.JsonSerializer.Deserialize<Dungeon>(dungeonJson);
-            RenderedDungeon = AsciiRenderer.Render(Dungeon);
+            RenderedDungeon = AsciiRenderer.RenderToHtml(Dungeon);
             ErrorMessage = string.Empty;
         }
         catch (Exception e)
