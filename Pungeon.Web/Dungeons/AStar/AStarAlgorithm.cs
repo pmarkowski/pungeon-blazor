@@ -7,7 +7,7 @@ namespace Pungeon.Web.Dungeons.AStar
     public static class AStarAlgorithm
     {
         public static List<RelativePosition> FindPath(
-            char[,] charGrid,
+            Grid grid,
             RelativePosition startPosition,
             RelativePosition endPosition)
         {
@@ -44,7 +44,7 @@ namespace Pungeon.Web.Dungeons.AStar
                 }
 
                 List<RelativePosition> adjacentWalkablePositions =
-                    GetWalkableAdjacentPositions(charGrid, current.Position);
+                    GetWalkableAdjacentPositions(grid, current.Position);
                 currentLowestCost++;
 
                 foreach (RelativePosition position in adjacentWalkablePositions)
@@ -88,26 +88,26 @@ namespace Pungeon.Web.Dungeons.AStar
             return result;
         }
 
-        private static List<RelativePosition> GetWalkableAdjacentPositions(char[,] charGrid, RelativePosition position)
+        private static List<RelativePosition> GetWalkableAdjacentPositions(Grid grid, RelativePosition position)
         {
             List<RelativePosition> adjacentWalkablePositions = new List<RelativePosition>();
 
             int x = position.X;
             int y = position.Y;
 
-            AddPositionToListIfValid(charGrid, adjacentWalkablePositions, x, y - 1);
-            AddPositionToListIfValid(charGrid, adjacentWalkablePositions, x + 1, y);
-            AddPositionToListIfValid(charGrid, adjacentWalkablePositions, x, y + 1);
-            AddPositionToListIfValid(charGrid, adjacentWalkablePositions, x - 1, y);
+            AddPositionToListIfValid(grid, adjacentWalkablePositions, x, y - 1);
+            AddPositionToListIfValid(grid, adjacentWalkablePositions, x + 1, y);
+            AddPositionToListIfValid(grid, adjacentWalkablePositions, x, y + 1);
+            AddPositionToListIfValid(grid, adjacentWalkablePositions, x - 1, y);
 
             return adjacentWalkablePositions;
         }
 
-        private static void AddPositionToListIfValid(char[,] charGrid, List<RelativePosition> adjacentWalkablePositions, int newX, int newY)
+        private static void AddPositionToListIfValid(Grid grid, List<RelativePosition> adjacentWalkablePositions, int newX, int newY)
         {
-            if (0 <= newY && newY < charGrid.GetLength(0) &&
-                0 <= newX && newX < charGrid.GetLength(1) &&
-                charGrid[newY, newX] != ' ')
+            if (0 <= newY && newY < grid.GetHeight() &&
+                0 <= newX && newX < grid.GetWidth() &&
+                grid[newX, newY] != ' ')
             {
                 adjacentWalkablePositions.Add(new RelativePosition(newX, newY));
             }

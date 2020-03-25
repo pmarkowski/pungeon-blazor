@@ -9,12 +9,12 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_HorizontalLine_FindsShortestPath()
         {
-            char[,] map = new char[,]
+            Grid map = new Grid(new char[,]
             {
                 { '#', '#', '#'},
                 { '#', '#', '#'},
                 { '#', '#', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -27,12 +27,12 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_DiagonalLine_FindsShortestPath()
         {
-            char[,] map = new char[,]
+            Grid map = new Grid(new char[,]
             {
                 { '#', '#', '#'},
                 { '#', '#', '#'},
                 { '#', '#', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -45,12 +45,12 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_HorizontalLineBlocked_GoesAroundBlock()
         {
-            char[,] map = new char[,]
+            Grid map = new Grid(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', '#', '#'},
                 { '#', '#', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -63,12 +63,12 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_CompletelyBlocked_ReturnsNull()
         {
-            char[,] map = new char[,]
+            Grid map = new Grid(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', ' ', '#'},
                 { '#', ' ', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -81,12 +81,12 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_StartSameAsEnd_ReturnsSelf()
         {
-            char[,] map = new char[,]
+            Grid map = new Grid(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', ' ', '#'},
                 { '#', ' ', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -99,7 +99,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_LargeRooms_DoesNotPassSpaces()
         {
-            char[,] map = new char[,]
+            Grid map = new Grid(new char[,]
             {
                 { ' ', ' ', ' ', '#', '#' },
                 { ' ', ' ', ' ', '#', '#' },
@@ -109,7 +109,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
                 { '#', '#', ' ', ' ', ' ' },
                 { '#', '#', ' ', ' ', ' ' },
                 { '#', '#', ' ', ' ', ' ' },
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
