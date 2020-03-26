@@ -1,27 +1,25 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Pungeon.Web.Dungeons
 {
     public class Grid
     {
-        private char[,] _grid;
+        private Dictionary<(int x, int y), char> _grid;
 
-        public Grid(int width, int height)
+        public Grid()
         {
-            _grid = new char[height, width];
-            InitializeCharGrid(_grid);
+            _grid = new Dictionary<(int x, int y), char>();
         }
 
         public Grid(char[,] grid)
         {
-            _grid = grid;
-        }
-
-        private static void InitializeCharGrid(char[,] charGrid)
-        {
-            for (int i = 0; i < charGrid.GetLength(0); i++)
+            _grid = new Dictionary<(int x, int y), char>();
+            for (int y = 0; y < grid.GetLength(0); y++)
             {
-                for (int j = 0; j < charGrid.GetLength(1); j++)
+                for (int x = 0; x < grid.GetLength(1); x++)
                 {
-                    charGrid[i, j] = '#';
+                    _grid[(x, y)] = grid[y, x];
                 }
             }
         }
@@ -30,22 +28,22 @@ namespace Pungeon.Web.Dungeons
         {
             get
             {
-                return _grid[y, x];
+                if (!_grid.ContainsKey((x ,y)))
+                {
+                    _grid[(x, y)] = '#';
+                }
+
+                return _grid[(x, y)];
             }
             set
             {
-                _grid[y, x] = value;
+                _grid[(x, y)] = value;
             }
         }
 
-        public int GetHeight()
-        {
-            return _grid.GetLength(0);
-        }
-
-        public int GetWidth()
-        {
-            return _grid.GetLength(1);
-        }
+        public int GetMinimumY() => _grid.Keys.Min(coord => coord.y);
+        public int GetMaximumY() => _grid.Keys.Max(coord => coord.y);
+        public int GetMinimumX() => _grid.Keys.Min(coord => coord.x);
+        public int GetMaximumX() => _grid.Keys.Max(coord => coord.x);
     }
 }

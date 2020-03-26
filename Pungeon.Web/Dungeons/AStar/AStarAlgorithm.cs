@@ -105,9 +105,7 @@ namespace Pungeon.Web.Dungeons.AStar
 
         private static void AddPositionToListIfValid(Grid grid, List<RelativePosition> adjacentWalkablePositions, int newX, int newY)
         {
-            if (0 <= newY && newY < grid.GetHeight() &&
-                0 <= newX && newX < grid.GetWidth() &&
-                grid[newX, newY] != ' ')
+            if (grid[newX, newY] != ' ')
             {
                 adjacentWalkablePositions.Add(new RelativePosition(newX, newY));
             }

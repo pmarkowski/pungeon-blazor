@@ -16,11 +16,14 @@ namespace Pungeon.Web.Dungeons.Rendering
         private static string GridToHtml(Grid grid)
         {
             StringBuilder builder = new StringBuilder();
-
-            for (int y = 0; y < grid.GetHeight(); y++)
+            int yStart = grid.GetMinimumY();
+            int height = grid.GetMaximumY();
+            int xStart = grid.GetMinimumX();
+            int width = grid.GetMaximumX();
+            for (int y = yStart; y <= height; y++)
             {
                 builder.Append("<div class='tile-row'>");
-                for (int x = 0; x < grid.GetWidth(); x++)
+                for (int x = xStart; x <= width; x++)
                 {
                     char tile = grid[x, y];
                     string tileDiv;

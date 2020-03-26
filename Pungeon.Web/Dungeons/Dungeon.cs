@@ -16,19 +16,9 @@ namespace Pungeon.Web.Dungeons
             Connections = new List<Connection>();
         }
 
-        public int GetWidth()
-        {
-            return Rooms.Any() ? Rooms.Max(room => room.RelativePosition.X + room.Room.GetWidth()) : 0;
-        }
-
-        public int GetHeight()
-        {
-            return Rooms.Any() ? Rooms.Max(room => room.RelativePosition.Y + room.Room.GetHeight()) : 0;
-        }
-
         public Grid ToGrid()
         {
-            Grid grid = new Grid(GetWidth(), GetHeight());
+            Grid grid = new Grid();
 
             foreach (DungeonRoom room in Rooms)
             {

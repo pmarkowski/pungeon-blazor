@@ -61,7 +61,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         }
 
         [Fact]
-        public void FindPath_CompletelyBlocked_ReturnsNull()
+        public void FindPath_InitiallyBlocked_ReturnsPath()
         {
             Grid map = new Grid(new char[,]
             {
@@ -75,7 +75,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
                 new RelativePosition(0, 0),
                 new RelativePosition(2, 0));
 
-            Assert.Null(path);
+            Assert.Equal(5, path.Count);
         }
 
         [Fact]
