@@ -9,12 +9,12 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_HorizontalLine_FindsShortestPath()
         {
-            char[,] map = new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', '#', '#'},
                 { '#', '#', '#'},
                 { '#', '#', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -27,12 +27,12 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_DiagonalLine_FindsShortestPath()
         {
-            char[,] map = new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', '#', '#'},
                 { '#', '#', '#'},
                 { '#', '#', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -45,12 +45,12 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_HorizontalLineBlocked_GoesAroundBlock()
         {
-            char[,] map = new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', '#', '#'},
                 { '#', '#', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -61,32 +61,32 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         }
 
         [Fact]
-        public void FindPath_CompletelyBlocked_ReturnsNull()
+        public void FindPath_InitiallyBlocked_ReturnsPath()
         {
-            char[,] map = new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', ' ', '#'},
                 { '#', ' ', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
                 new RelativePosition(0, 0),
                 new RelativePosition(2, 0));
 
-            Assert.Null(path);
+            Assert.Equal(5, path.Count);
         }
 
         [Fact]
         public void FindPath_StartSameAsEnd_ReturnsSelf()
         {
-            char[,] map = new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', ' ', '#'},
                 { '#', ' ', '#'}
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,
@@ -99,7 +99,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_LargeRooms_DoesNotPassSpaces()
         {
-            char[,] map = new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { ' ', ' ', ' ', '#', '#' },
                 { ' ', ' ', ' ', '#', '#' },
@@ -109,7 +109,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
                 { '#', '#', ' ', ' ', ' ' },
                 { '#', '#', ' ', ' ', ' ' },
                 { '#', '#', ' ', ' ', ' ' },
-            };
+            });
 
             var path = AStarAlgorithm.FindPath(
                 map,

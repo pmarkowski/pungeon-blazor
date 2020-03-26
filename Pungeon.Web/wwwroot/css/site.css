@@ -130,6 +130,7 @@ app {
 
         .tile-row .tile.empty { background-color: #d6d5d5; }
         .tile-row .tile.full { background-color: #0366d6; }
+        .tile-row .tile.connector { background-color: #3a0647; }
 
 #blazor-error-ui {
     background: lightyellow;
