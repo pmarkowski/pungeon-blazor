@@ -34,6 +34,10 @@ namespace Pungeon.Web.Dungeons.Rendering
                             tileDiv = "<div class='tile full'></div>";
                             builder.Append(tileDiv);
                             break;
+                        case '+':
+                            tileDiv = "<div class='tile connector'></div>";
+                            builder.Append(tileDiv);
+                            break;
                         default:
                             break;
                     }

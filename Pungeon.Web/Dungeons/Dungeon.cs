@@ -45,10 +45,22 @@ namespace Pungeon.Web.Dungeons
                     connector1.RelativePosition,
                     connector2.RelativePosition);
 
-                HollowOutPathInGrid(grid, path);
+                if (path != null)
+                {
+                    HollowOutPathInGrid(grid, path);
+                }
+
+                // TODO: Hollowing out the path overwrites this so we write it again
+                PlaceConnector(grid, connector1.RelativePosition);
+                PlaceConnector(grid, connector2.RelativePosition);
             }
 
             return grid;
+        }
+
+        private void PlaceConnector(Grid grid, RelativePosition relativePosition)
+        {
+            grid[relativePosition.X, relativePosition.Y] = '+';
         }
 
         private Connector GetConnectorInDungeonSpace(string connectorId)
@@ -82,15 +94,20 @@ namespace Pungeon.Web.Dungeons
         private static void HollowOutSpaceInGrid(Grid grid, Space space, int xOffset, int yOffset)
         {
             int yStart = yOffset + space.RelativePosition.Y;
+            int xStart = xOffset + space.RelativePosition.X;
 
             for (int y = yStart; y < yStart + space.Size.Height; y++)
             {
-                int xStart = xOffset + space.RelativePosition.X;
 
                 for (int x = xStart; x < xStart + space.Size.Width; x++)
                 {
                     grid[x, y] = ' ';
                 }
+            }
+
+            foreach (Connector connector in space.Connectors)
+            {
+                grid[xStart + connector.RelativePosition.X, yStart + connector.RelativePosition.Y] = '+';
             }
         }
 
