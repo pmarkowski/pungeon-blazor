@@ -9,7 +9,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_HorizontalLine_FindsShortestPath()
         {
-            Grid map = new Grid(new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', '#', '#'},
                 { '#', '#', '#'},
@@ -27,7 +27,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_DiagonalLine_FindsShortestPath()
         {
-            Grid map = new Grid(new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', '#', '#'},
                 { '#', '#', '#'},
@@ -45,7 +45,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_HorizontalLineBlocked_GoesAroundBlock()
         {
-            Grid map = new Grid(new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', '#', '#'},
@@ -63,7 +63,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_InitiallyBlocked_ReturnsPath()
         {
-            Grid map = new Grid(new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', ' ', '#'},
@@ -81,7 +81,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_StartSameAsEnd_ReturnsSelf()
         {
-            Grid map = new Grid(new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { '#', ' ', '#'},
                 { '#', ' ', '#'},
@@ -99,7 +99,7 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
         [Fact]
         public void FindPath_LargeRooms_DoesNotPassSpaces()
         {
-            Grid map = new Grid(new char[,]
+            Grid map = GridFactory.GridFromCharArray(new char[,]
             {
                 { ' ', ' ', ' ', '#', '#' },
                 { ' ', ' ', ' ', '#', '#' },

@@ -12,18 +12,6 @@ namespace Pungeon.Web.Dungeons
             _grid = new Dictionary<(int x, int y), char>();
         }
 
-        public Grid(char[,] grid)
-        {
-            _grid = new Dictionary<(int x, int y), char>();
-            for (int y = 0; y < grid.GetLength(0); y++)
-            {
-                for (int x = 0; x < grid.GetLength(1); x++)
-                {
-                    _grid[(x, y)] = grid[y, x];
-                }
-            }
-        }
-
         public char this[int x, int y]
         {
             get
