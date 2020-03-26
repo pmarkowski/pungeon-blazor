@@ -71,17 +71,39 @@ namespace Pungeon.Web.Dungeons
 
         private static void HollowOutRoomInGrid(Grid grid, DungeonRoom room)
         {
+            // outline spaces with walls
+            foreach (Space space in room.Room.Spaces)
+            {
+                HollowOutSpaceInGrid(
+                    grid,
+                    new Space()
+                    {
+                        RelativePosition = new RelativePosition(
+                            space.RelativePosition.X - 1,
+                            space.RelativePosition.Y - 1
+                        ),
+                        Size = new Size(
+                            space.Size.Width + 2,
+                            space.Size.Height + 2
+                        )
+                    },
+                    room.RelativePosition.X,
+                    room.RelativePosition.Y,
+                    '|'
+                );
+            }
             foreach (Space space in room.Room.Spaces)
             {
                 HollowOutSpaceInGrid(
                     grid,
                     space,
                     room.RelativePosition.X,
-                    room.RelativePosition.Y);
+                    room.RelativePosition.Y,
+                    ' ');
             }
         }
 
-        private static void HollowOutSpaceInGrid(Grid grid, Space space, int xOffset, int yOffset)
+        private static void HollowOutSpaceInGrid(Grid grid, Space space, int xOffset, int yOffset, char fill)
         {
             int yStart = yOffset + space.RelativePosition.Y;
             int xStart = xOffset + space.RelativePosition.X;
@@ -91,7 +113,7 @@ namespace Pungeon.Web.Dungeons
 
                 for (int x = xStart; x < xStart + space.Size.Width; x++)
                 {
-                    grid[x, y] = ' ';
+                    grid[x, y] = fill;
                 }
             }
 
