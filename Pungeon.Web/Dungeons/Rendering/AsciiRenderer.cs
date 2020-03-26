@@ -10,11 +10,6 @@ namespace Pungeon.Web.Dungeons.Rendering
     {
         public static string RenderToHtml(Grid grid)
         {
-            return GridToHtml(grid);
-        }
-
-        private static string GridToHtml(Grid grid)
-        {
             StringBuilder builder = new StringBuilder();
             int yStart = grid.GetMinimumY();
             int height = grid.GetMaximumY();
