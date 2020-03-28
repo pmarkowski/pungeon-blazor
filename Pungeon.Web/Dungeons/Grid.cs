@@ -29,9 +29,9 @@ namespace Pungeon.Web.Dungeons
             }
         }
 
-        public int GetMinimumY() => _grid.Keys.Min(coord => coord.y);
-        public int GetMaximumY() => _grid.Keys.Max(coord => coord.y);
-        public int GetMinimumX() => _grid.Keys.Min(coord => coord.x);
-        public int GetMaximumX() => _grid.Keys.Max(coord => coord.x);
+        public int GetMinimumY() => _grid.Keys.Where(coord => _grid[coord] != '#').Min(coord => coord.y);
+        public int GetMaximumY() => _grid.Keys.Where(coord => _grid[coord] != '#').Max(coord => coord.y);
+        public int GetMinimumX() => _grid.Keys.Where(coord => _grid[coord] != '#').Min(coord => coord.x);
+        public int GetMaximumX() => _grid.Keys.Where(coord => _grid[coord] != '#').Max(coord => coord.x);
     }
 }
