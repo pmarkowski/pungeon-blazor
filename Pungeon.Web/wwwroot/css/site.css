@@ -117,6 +117,10 @@ app {
     color: red;
 }
 
+.tile-container {
+    overflow: scroll;
+}
+
 .tile-row {
     clear: left;
 }

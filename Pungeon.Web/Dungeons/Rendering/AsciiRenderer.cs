@@ -17,7 +17,7 @@ namespace Pungeon.Web.Dungeons.Rendering
             int width = grid.GetMaximumX();
             for (int y = yStart; y <= height; y++)
             {
-                builder.Append("<div class='tile-row'>");
+                builder.Append($"<div class='tile-row' style='width:{(width - xStart + 1) * 20}px;'>");
                 for (int x = xStart; x <= width; x++)
                 {
                     char tile = grid[x, y];
