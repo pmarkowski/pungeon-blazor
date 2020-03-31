@@ -29,15 +29,66 @@
             <label class="btn btn-secondary active"><input type="radio" name="control" id="new-room" checked><span class="oi oi-plus pr-1"></span>Room</label>
         </div>
         <div class="tile-container">
-            @((MarkupString)RenderedDungeon)
+            @{
+            Grid grid = Dungeon.ToGrid();
+            int yStart = grid.GetMinimumY();
+            int height = grid.GetMaximumY();
+            int xStart = grid.GetMinimumX();
+            int width = grid.GetMaximumX();
+            @for (int y = yStart; y <= height; y++)
+            {
+                <div class='tile-row' style='width:@((width - xStart + 1) * 20)px;'>
+                @for (int x = xStart; x <= width; x++)
+                {
+                    string tileClass = null;
+                    char tile = grid[x, y];
+                    switch (tile)
+                    {
+                        case ' ':
+                            tileClass = "empty";
+                            break;
+                        case '|':
+                            tileClass = "full";
+                            break;
+                        case '#':
+                            tileClass = "full";
+                            break;
+                        case '+':
+                            tileClass = "connector";
+                            break;
+                    }
+
+                    if ((dragStartX.HasValue && dragStartY.HasValue) &&
+                        (System.Math.Min(dragStartX.Value, currentHoverX) <= x && x <= System.Math.Max(dragStartX.Value, currentHoverX)) &&
+                        (System.Math.Min(dragStartY.Value, currentHoverY) <= y && y <= System.Math.Max(dragStartY.Value, currentHoverY)))
+                    {
+                        tileClass += " hover";
+                    }
+
+                    int currentX = x;
+                    int currentY = y;
+                    <div
+                        class='tile @(tileClass)'
+                        @onmousedown="@(e => MouseDown(e, currentX, currentY))"
+                        @onmouseup="@(e => MouseUp(e, currentX, currentY))"
+                        @onmouseover="@(e => MouseOver(e, currentX, currentY))"></div>
+                }
+                </div>
+            }
+            }
         </div>
     </div>
 </div>
 
 @code {
-    private Dungeon Dungeon;
-    private string RenderedDungeon;
     private string ErrorMessage = string.Empty;
+
+    private Dungeon Dungeon;
+
+    private int currentHoverX;
+    private int currentHoverY;
+    private int? dragStartX;
+    private int? dragStartY;
 
     protected override void OnInitialized()
     {
@@ -114,7 +165,6 @@
 
         try
         {
-            RenderedDungeon = AsciiRenderer.RenderToHtml(Dungeon.ToGrid());
             ErrorMessage = string.Empty;
         }
         catch (Exception e)
@@ -129,12 +179,59 @@
         {
             string dungeonJson = args.Value.ToString();
             Dungeon = System.Text.Json.JsonSerializer.Deserialize<Dungeon>(dungeonJson);
-            RenderedDungeon = AsciiRenderer.RenderToHtml(Dungeon.ToGrid());
             ErrorMessage = string.Empty;
         }
         catch (Exception e)
         {
             ErrorMessage = e.ToString();
         }
+    }
+
+    private void MouseOver(MouseEventArgs e, int x, int y)
+    {
+        currentHoverX = x;
+        currentHoverY = y;
+    }
+
+    private void MouseDown(MouseEventArgs e, int x, int y)
+    {
+        dragStartX = x;
+        dragStartY = y;
+    }
+
+    private void MouseUp(MouseEventArgs e, int x, int y)
+    {
+        if (!dragStartX.HasValue || !dragStartY.HasValue)
+        {
+            return;
+        }
+
+        int endX = x;
+        int endY = y;
+
+        RelativePosition topLeft = new RelativePosition(
+            System.Math.Min(dragStartX.Value, endX),
+            System.Math.Min(dragStartY.Value, endY)
+        );
+        Dungeon.Rooms.Add(new DungeonRoom
+        {
+            RelativePosition = topLeft,
+            Room = new Room
+            {
+                Spaces = new List<Space>()
+                {
+                    new Space()
+                    {
+                        RelativePosition = new RelativePosition(0, 0),
+                        Size = new Size(
+                            System.Math.Abs(endX - dragStartX.Value) + 1,
+                            System.Math.Abs(endY - dragStartY.Value) + 1)
+                    }
+                }
+            }
+        });
+
+        dragStartX = null;
+        dragStartY = null;
     }
 }

@@ -130,6 +130,10 @@ app {
         box-shadow: inset 0px 0px 1px 0px #333333;
     }
 
+    .tile-row .tile:hover, .tile-row .tile.hover {
+        box-shadow: inset 0 0 3px 1px yellow;
+    }
+
         .tile-row .tile.empty { background-color: #d6d5d5; }
         .tile-row .tile.full { background-color: #0366d6; }
         .tile-row .tile.connector { background-color: #3a0647; }
