@@ -3,8 +3,6 @@
 @using Pungeon.Web.Dungeons
 @using Pungeon.Web.Dungeons.Rendering
 
-<h1>Dungeon Renderer</h1>
-
 @if (!string.IsNullOrWhiteSpace(ErrorMessage))
 {
     <div class="alert alert-warning">
@@ -27,6 +25,9 @@
         </textarea>
     </div>
     <div class="col-md-7">
+        <div class="btn-group btn-group-toggle py-2" data-toggle="buttons">
+            <label class="btn btn-secondary active"><input type="radio" name="control" id="new-room" checked><span class="oi oi-plus pr-1"></span>Room</label>
+        </div>
         <div class="tile-container">
             @((MarkupString)RenderedDungeon)
         </div>
