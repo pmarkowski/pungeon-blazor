@@ -118,36 +118,44 @@ namespace Pungeon.Web.Pages
 
         protected void MouseOver(MouseEventArgs e, int x, int y)
         {
-            currentHoverX = x;
-            currentHoverY = y;
+            if (currentTool == "new-room")
+            {
+                currentHoverX = x;
+                currentHoverY = y;
+            }
         }
 
         protected void MouseDown(MouseEventArgs e, int x, int y)
         {
-            dragStartX = x;
-            dragStartY = y;
+            if (currentTool == "new-room")
+            {
+                dragStartX = x;
+                dragStartY = y;
+            }
         }
 
         protected void MouseUp(MouseEventArgs e, int x, int y)
         {
-            if (!dragStartX.HasValue || !dragStartY.HasValue)
+            if (currentTool == "new-room")
             {
-                return;
-            }
-
-            int endX = x;
-            int endY = y;
-
-            RelativePosition topLeft = new RelativePosition(
-                System.Math.Min(dragStartX.Value, endX),
-                System.Math.Min(dragStartY.Value, endY)
-            );
-            Dungeon.Rooms.Add(new DungeonRoom
-            {
-                RelativePosition = topLeft,
-                Room = new Room
+                if (!dragStartX.HasValue || !dragStartY.HasValue)
                 {
-                    Spaces = new List<Space>()
+                    return;
+                }
+
+                int endX = x;
+                int endY = y;
+
+                RelativePosition topLeft = new RelativePosition(
+                    System.Math.Min(dragStartX.Value, endX),
+                    System.Math.Min(dragStartY.Value, endY)
+                );
+                Dungeon.Rooms.Add(new DungeonRoom
+                {
+                    RelativePosition = topLeft,
+                    Room = new Room
+                    {
+                        Spaces = new List<Space>()
                 {
                     new Space()
                     {
@@ -157,11 +165,17 @@ namespace Pungeon.Web.Pages
                             System.Math.Abs(endY - dragStartY.Value) + 1)
                     }
                 }
-                }
-            });
+                    }
+                });
 
-            dragStartX = null;
-            dragStartY = null;
+                dragStartX = null;
+                dragStartY = null;
+            }
+            else if (currentTool == "new-connector")
+            {
+                // Get room/space for this location
+                // add a new connector to it with a relative position
+            }
         }
     }
 }
