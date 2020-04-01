@@ -44,7 +44,7 @@ namespace Pungeon.Web.Pages
                                     new Connector()
                                     {
                                         Id = "Connector1",
-                                        RelativePosition = new RelativePosition(7, 9)
+                                        RelativePosition = new RelativePosition(7, 3)
                                     }
                                 }
                             }
@@ -72,7 +72,7 @@ namespace Pungeon.Web.Pages
                                     new Connector()
                                     {
                                         Id = "Connector2",
-                                        RelativePosition = new RelativePosition(4, 9)
+                                        RelativePosition = new RelativePosition(2, 9)
                                     }
                                 }
                             }
