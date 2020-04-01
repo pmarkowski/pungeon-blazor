@@ -25,14 +25,12 @@
     </div>
     <div class="col-md-7">
         <div class="btn-group btn-group-toggle py-2" data-toggle="buttons">
-            <label class="btn btn-secondary active">
-                <input type="radio" name="control" id="new-room" checked>
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-room" ? "active" : "")" @onclick="@(() => currentTool = "new-room")">
                 <span class="oi oi-plus pr-1"></span>Room
-            </label>
-            <label class="btn btn-secondary">
-                <input type="radio" name="control" id="new-connector">
+            </button>
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connector" ? "active" : "")" @onclick="@(() => currentTool = "new-connector")">
                 <span class="oi oi-plus pr-1"></span>Connector
-            </label>
+            </button>
         </div>
         <div class="tile-container">
             @{

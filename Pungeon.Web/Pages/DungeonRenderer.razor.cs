@@ -12,6 +12,8 @@ namespace Pungeon.Web.Pages
 
         protected Dungeon Dungeon;
 
+        protected string currentTool = "new-room";
+
         protected int currentHoverX;
         protected int currentHoverY;
         protected int? dragStartX;
@@ -100,7 +102,7 @@ namespace Pungeon.Web.Pages
             }
         }
 
-        public void RenderDungeon(ChangeEventArgs args)
+        protected void RenderDungeon(ChangeEventArgs args)
         {
             try
             {
