@@ -22,72 +22,72 @@ namespace Pungeon.Web.Pages
             Dungeon = new Dungeon()
             {
                 Rooms = new List<DungeonRoom>()
-            {
-                new DungeonRoom()
                 {
-                    RelativePosition = new RelativePosition(1, 1),
-                    Room = new Room()
+                    new DungeonRoom()
                     {
-                        Spaces = new List<Space>()
+                        RelativePosition = new RelativePosition(1, 1),
+                        Room = new Room()
                         {
-                            new Space()
+                            Spaces = new List<Space>()
                             {
-                                RelativePosition = new RelativePosition(1, 1),
-                                Size = new Size(5, 5)
-                            },
-                            new Space()
-                            {
-                                RelativePosition = new RelativePosition(6, 4),
-                                Size = new Size(7, 9),
-                                Connectors = new List<Connector>()
+                                new Space()
                                 {
-                                    new Connector()
+                                    RelativePosition = new RelativePosition(1, 1),
+                                    Size = new Size(5, 5)
+                                },
+                                new Space()
+                                {
+                                    RelativePosition = new RelativePosition(6, 4),
+                                    Size = new Size(7, 9),
+                                    Connectors = new List<Connector>()
                                     {
-                                        Id = "Connector1",
-                                        RelativePosition = new RelativePosition(7, 3)
+                                        new Connector()
+                                        {
+                                            Id = "Connector1",
+                                            RelativePosition = new RelativePosition(7, 3)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new DungeonRoom()
+                    {
+                        RelativePosition = new RelativePosition(15, 16),
+                        Room = new Room()
+                        {
+                            Spaces = new List<Space>()
+                            {
+                                new Space()
+                                {
+                                    RelativePosition = new RelativePosition(0, 0),
+                                    Size = new Size(6, 7)
+                                },
+                                new Space()
+                                {
+                                    RelativePosition = new RelativePosition(6, 3),
+                                    Size = new Size(4, 9),
+                                    Connectors = new List<Connector>()
+                                    {
+                                        new Connector()
+                                        {
+                                            Id = "Connector2",
+                                            RelativePosition = new RelativePosition(2, 9)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 },
-                new DungeonRoom()
+                Connections = new List<Connection>()
                 {
-                    RelativePosition = new RelativePosition(15, 16),
-                    Room = new Room()
+                    new Connection()
                     {
-                        Spaces = new List<Space>()
-                        {
-                            new Space()
-                            {
-                                RelativePosition = new RelativePosition(0, 0),
-                                Size = new Size(6, 7)
-                            },
-                            new Space()
-                            {
-                                RelativePosition = new RelativePosition(6, 3),
-                                Size = new Size(4, 9),
-                                Connectors = new List<Connector>()
-                                {
-                                    new Connector()
-                                    {
-                                        Id = "Connector2",
-                                        RelativePosition = new RelativePosition(2, 9)
-                                    }
-                                }
-                            }
-                        }
+                        ConnectorId1 = "Connector1",
+                        ConnectorId2 = "Connector2"
                     }
                 }
-            },
-                Connections = new List<Connection>()
-            {
-                new Connection()
-                {
-                    ConnectorId1 = "Connector1",
-                    ConnectorId2 = "Connector2"
-                }
-            }
             };
 
             try
