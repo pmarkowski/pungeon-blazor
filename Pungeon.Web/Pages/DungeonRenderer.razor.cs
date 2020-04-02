@@ -158,15 +158,15 @@ namespace Pungeon.Web.Pages
                     Room = new Room
                     {
                         Spaces = new List<Space>()
-                {
-                    new Space()
-                    {
-                        RelativePosition = new RelativePosition(0, 0),
-                        Size = new Size(
-                            System.Math.Abs(endX - dragStartX.Value) + 1,
-                            System.Math.Abs(endY - dragStartY.Value) + 1)
-                    }
-                }
+                        {
+                            new Space()
+                            {
+                                RelativePosition = new RelativePosition(0, 0),
+                                Size = new Size(
+                                    System.Math.Abs(endX - dragStartX.Value) + 1,
+                                    System.Math.Abs(endY - dragStartY.Value) + 1)
+                            }
+                        }
                     }
                 });
 
@@ -175,22 +175,13 @@ namespace Pungeon.Web.Pages
             }
             else if (currentTool == "new-connector")
             {
-                // Get room/space for this location
-                // We have dungeon space coordinates
                 int dungeonSpaceX = x;
                 int dungeonSpaceY = y;
 
-                // Need to find the closest Space to those coordinates
-                // Get manhattan distance from all corners of all spaces and take the min
                 Space space = GetClosestSpaceToPoint(dungeonSpaceX, dungeonSpaceY);
 
-                // how do you get the relative room position with this way?
-                // and convert the connector to that Space space
-                // If you get a reference to a space... you can actually use equality here
-                // to find the dungeon space offset by reference
                 RelativePosition offset = GetDungeonSpaceOffsetForSpace(space);
 
-                // add a new connector to it with a relative position
                 space.Connectors.Add(new Connector()
                 {
                     Id = Guid.NewGuid().ToString(),
@@ -215,6 +206,7 @@ namespace Pungeon.Web.Pages
                             room.RelativePosition.Y + space.RelativePosition.Y
                         )
                     }));
+
             Space minSpace = null;
             int minDistance = int.MaxValue;
             foreach (var space in spaceList)
@@ -253,7 +245,7 @@ namespace Pungeon.Web.Pages
                             room.RelativePosition.Y + space.RelativePosition.Y
                         )
                     }))
-            .Single(spaceWithOffset => spaceWithOffset.Space == space);
+                .Single(spaceWithOffset => spaceWithOffset.Space == space);
 
             return spaceWithOffset.SpaceOffset;
         }
