@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Pungeon.Web.Dungeons;
-using Pungeon.Web.Dungeons.AStar;
 
 namespace Pungeon.Web.Pages
 {

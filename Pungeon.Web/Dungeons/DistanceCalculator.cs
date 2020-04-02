@@ -1,6 +1,6 @@
 using System;
 
-namespace Pungeon.Web.Dungeons.AStar
+namespace Pungeon.Web.Dungeons
 {
     public static class DistanceCalculator
     {
