@@ -31,6 +31,9 @@
             <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connector" ? "active" : "")" @onclick="@(() => currentTool = "new-connector")">
                 <span class="oi oi-plus pr-1"></span>Connector
             </button>
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connection" ? "active" : "")" @onclick="@(() => currentTool = "new-connection")">
+                <span class="oi oi-plus pr-1"></span>Hallway
+            </button>
         </div>
         <div class="tile-container">
             @{
