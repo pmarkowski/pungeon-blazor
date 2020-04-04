@@ -55,7 +55,7 @@
                             tileClass = "empty";
                             break;
                         case '|':
-                            tileClass = "full";
+                            tileClass = "wall";
                             break;
                         case '#':
                             tileClass = "full";
@@ -65,7 +65,8 @@
                             break;
                     }
 
-                    if ((dragStartX.HasValue && dragStartY.HasValue) &&
+                    if (connector1X == x && connector1Y == y ||
+                        (dragStartX.HasValue && dragStartY.HasValue) &&
                         (System.Math.Min(dragStartX.Value, currentHoverX) <= x && x <= System.Math.Max(dragStartX.Value, currentHoverX)) &&
                         (System.Math.Min(dragStartY.Value, currentHoverY) <= y && y <= System.Math.Max(dragStartY.Value, currentHoverY)))
                     {

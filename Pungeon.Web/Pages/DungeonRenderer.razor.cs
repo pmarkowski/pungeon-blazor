@@ -20,6 +20,8 @@ namespace Pungeon.Web.Pages
         protected int? dragStartX;
         protected int? dragStartY;
 
+        protected int? connector1X;
+        protected int? connector1Y;
         protected string connectorId1;
 
         protected override void OnInitialized()
@@ -199,6 +201,8 @@ namespace Pungeon.Web.Pages
                 {
                     if (string.IsNullOrWhiteSpace(connectorId1))
                     {
+                        connector1X = x;
+                        connector1Y = y;
                         connectorId1 = connectorId;
                     }
                     else
@@ -211,6 +215,8 @@ namespace Pungeon.Web.Pages
                             ConnectorId2 = connectorId2
                         });
 
+                        connector1X = null;
+                        connector1Y = null;
                         connectorId1 = null;
                     }
                 }
