@@ -194,27 +194,30 @@ namespace Pungeon.Web.Pages
             }
             else if (currentTool == "new-connection")
             {
-                string connectorId = GetConnectorAt(x, y);
-                if (string.IsNullOrWhiteSpace(connectorId1))
+                string connectorId = GetConnectorIdAt(x, y);
+                if (!string.IsNullOrWhiteSpace(connectorId))
                 {
-                    connectorId1 = connectorId;
-                }
-                else
-                {
-                    string connectorId2 = connectorId;
-
-                    Dungeon.Connections.Add(new Connection()
+                    if (string.IsNullOrWhiteSpace(connectorId1))
                     {
-                        ConnectorId1 = connectorId1,
-                        ConnectorId2 = connectorId2
-                    });
+                        connectorId1 = connectorId;
+                    }
+                    else
+                    {
+                        string connectorId2 = connectorId;
 
-                    connectorId1 = null;
+                        Dungeon.Connections.Add(new Connection()
+                        {
+                            ConnectorId1 = connectorId1,
+                            ConnectorId2 = connectorId2
+                        });
+
+                        connectorId1 = null;
+                    }
                 }
             }
         }
 
-        private string GetConnectorAt(int dungeonSpaceX, int dungeonSpaceY)
+        private string GetConnectorIdAt(int dungeonSpaceX, int dungeonSpaceY)
         {
             return Dungeon.Rooms.SelectMany(room =>
                 room.Room.Spaces.SelectMany(space =>
@@ -227,9 +230,9 @@ namespace Pungeon.Web.Pages
                                 connector.RelativePosition.Y + space.RelativePosition.Y + room.RelativePosition.Y
                             )
                         })))
-                .Single(connector => connector.RelativePosition.X == dungeonSpaceX &&
+                .SingleOrDefault(connector => connector.RelativePosition.X == dungeonSpaceX &&
                     connector.RelativePosition.Y == dungeonSpaceY)
-                .Id;
+                ?.Id;
         }
 
         private Space GetClosestSpaceToPoint(int dungeonSpaceX, int dungeonSpaceY)
