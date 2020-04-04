@@ -31,6 +31,9 @@
             <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connector" ? "active" : "")" @onclick="@(() => currentTool = "new-connector")">
                 <span class="oi oi-plus pr-1"></span>Connector
             </button>
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connection" ? "active" : "")" @onclick="@(() => currentTool = "new-connection")">
+                <span class="oi oi-plus pr-1"></span>Hallway
+            </button>
         </div>
         <div class="tile-container">
             @{
@@ -52,7 +55,7 @@
                             tileClass = "empty";
                             break;
                         case '|':
-                            tileClass = "full";
+                            tileClass = "wall";
                             break;
                         case '#':
                             tileClass = "full";
@@ -62,7 +65,8 @@
                             break;
                     }
 
-                    if ((dragStartX.HasValue && dragStartY.HasValue) &&
+                    if (connector1X == x && connector1Y == y ||
+                        (dragStartX.HasValue && dragStartY.HasValue) &&
                         (System.Math.Min(dragStartX.Value, currentHoverX) <= x && x <= System.Math.Max(dragStartX.Value, currentHoverX)) &&
                         (System.Math.Min(dragStartY.Value, currentHoverY) <= y && y <= System.Math.Max(dragStartY.Value, currentHoverY)))
                     {

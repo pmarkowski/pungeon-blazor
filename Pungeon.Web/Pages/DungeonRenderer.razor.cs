@@ -20,6 +20,10 @@ namespace Pungeon.Web.Pages
         protected int? dragStartX;
         protected int? dragStartY;
 
+        protected int? connector1X;
+        protected int? connector1Y;
+        protected string connectorId1;
+
         protected override void OnInitialized()
         {
             Dungeon = new Dungeon()
@@ -190,6 +194,51 @@ namespace Pungeon.Web.Pages
                     )
                 });
             }
+            else if (currentTool == "new-connection")
+            {
+                string connectorId = GetConnectorIdAt(x, y);
+                if (!string.IsNullOrWhiteSpace(connectorId))
+                {
+                    if (string.IsNullOrWhiteSpace(connectorId1))
+                    {
+                        connector1X = x;
+                        connector1Y = y;
+                        connectorId1 = connectorId;
+                    }
+                    else
+                    {
+                        string connectorId2 = connectorId;
+
+                        Dungeon.Connections.Add(new Connection()
+                        {
+                            ConnectorId1 = connectorId1,
+                            ConnectorId2 = connectorId2
+                        });
+
+                        connector1X = null;
+                        connector1Y = null;
+                        connectorId1 = null;
+                    }
+                }
+            }
+        }
+
+        private string GetConnectorIdAt(int dungeonSpaceX, int dungeonSpaceY)
+        {
+            return Dungeon.Rooms.SelectMany(room =>
+                room.Room.Spaces.SelectMany(space =>
+                    space.Connectors.Select(connector =>
+                        new Connector
+                        {
+                            Id = connector.Id,
+                            RelativePosition = new RelativePosition(
+                                connector.RelativePosition.X + space.RelativePosition.X + room.RelativePosition.X,
+                                connector.RelativePosition.Y + space.RelativePosition.Y + room.RelativePosition.Y
+                            )
+                        })))
+                .SingleOrDefault(connector => connector.RelativePosition.X == dungeonSpaceX &&
+                    connector.RelativePosition.Y == dungeonSpaceY)
+                ?.Id;
         }
 
         private Space GetClosestSpaceToPoint(int dungeonSpaceX, int dungeonSpaceY)
