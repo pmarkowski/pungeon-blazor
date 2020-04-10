@@ -7,18 +7,22 @@ namespace Pungeon.Web.Dungeons
 {
     public class Dungeon
     {
+        public Size MinimumSize { get; set; }
         public List<DungeonRoom> Rooms { get; set; }
         public List<Connection> Connections { get; set; }
 
         public Dungeon()
         {
+            MinimumSize = new Size(0, 0);
             Rooms = new List<DungeonRoom>();
             Connections = new List<Connection>();
         }
 
         public Grid ToGrid()
         {
-            Grid grid = new Grid();
+            Grid grid = (MinimumSize != null) ?
+                new Grid(MinimumSize) :
+                new Grid();
 
             foreach (DungeonRoom room in Rooms)
             {
