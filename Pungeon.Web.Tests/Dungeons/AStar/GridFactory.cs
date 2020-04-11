@@ -12,7 +12,10 @@ namespace Pungeon.Web.Tests.Dungeons.AStar
             {
                 for (int x = 0; x < charGrid.GetLength(1); x++)
                 {
-                    grid[x, y] = charGrid[y, x];
+                    grid[x, y] = new Tile
+                    {
+                        Character = charGrid[y, x]
+                    };
                 }
             }
             return grid;

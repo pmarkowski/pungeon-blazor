@@ -54,7 +54,10 @@ namespace Pungeon.Web.Dungeons
 
         private void PlaceConnector(Grid grid, RelativePosition relativePosition)
         {
-            grid[relativePosition.X, relativePosition.Y] = '+';
+            grid[relativePosition.X, relativePosition.Y] = new Tile
+            {
+                Character = '+'
+            };
         }
 
         private Connector GetConnectorInDungeonSpace(string connectorId)
@@ -117,13 +120,19 @@ namespace Pungeon.Web.Dungeons
 
                 for (int x = xStart; x < xStart + space.Size.Width; x++)
                 {
-                    grid[x, y] = fill;
+                    grid[x, y] = new Tile
+                    {
+                        Character = fill
+                    };
                 }
             }
 
             foreach (Connector connector in space.Connectors)
             {
-                grid[xStart + connector.RelativePosition.X, yStart + connector.RelativePosition.Y] = '+';
+                grid[xStart + connector.RelativePosition.X, yStart + connector.RelativePosition.Y] = new Tile
+                {
+                    Character = '+'
+                };
             }
         }
 
@@ -134,7 +143,10 @@ namespace Pungeon.Web.Dungeons
                 int y = position.Y;
                 int x = position.X;
 
-                grid[x, y] = ' ';
+                grid[x, y] = new Tile
+                {
+                    Character = ' '
+                };
             }
         }
     }
