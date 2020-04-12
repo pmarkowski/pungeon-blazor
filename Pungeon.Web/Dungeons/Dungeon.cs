@@ -96,8 +96,8 @@ namespace Pungeon.Web.Dungeons
                     },
                     room.RelativePosition.X,
                     room.RelativePosition.Y,
-                    '|'
-                );
+                    '|',
+                    room);
             }
             foreach (Space space in room.Room.Spaces)
             {
@@ -106,11 +106,12 @@ namespace Pungeon.Web.Dungeons
                     space,
                     room.RelativePosition.X,
                     room.RelativePosition.Y,
-                    ' ');
+                    ' ',
+                    room);
             }
         }
 
-        private static void HollowOutSpaceInGrid(Grid grid, Space space, int xOffset, int yOffset, char fill)
+        private static void HollowOutSpaceInGrid(Grid grid, Space space, int xOffset, int yOffset, char fill, DungeonRoom parentRoom)
         {
             int yStart = yOffset + space.RelativePosition.Y;
             int xStart = xOffset + space.RelativePosition.X;
@@ -122,7 +123,8 @@ namespace Pungeon.Web.Dungeons
                 {
                     grid[x, y] = new Tile
                     {
-                        Character = fill
+                        Character = fill,
+                        ParentRoom = parentRoom
                     };
                 }
             }
@@ -131,7 +133,8 @@ namespace Pungeon.Web.Dungeons
             {
                 grid[xStart + connector.RelativePosition.X, yStart + connector.RelativePosition.Y] = new Tile
                 {
-                    Character = '+'
+                    Character = '+',
+                    ParentRoom = parentRoom
                 };
             }
         }
