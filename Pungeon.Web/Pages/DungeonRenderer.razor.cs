@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Pungeon.Web.Dungeons;
@@ -14,6 +15,8 @@ namespace Pungeon.Web.Pages
         protected Dungeon Dungeon;
 
         protected string currentTool = "new-room";
+
+        protected DungeonRoom SelectedRoom;
 
         protected int currentHoverX;
         protected int currentHoverY;
@@ -121,6 +124,36 @@ namespace Pungeon.Web.Pages
             }
         }
 
+        protected void ChangeTool(string newTool)
+        {
+            SelectedRoom = null;
+            currentTool = newTool;
+        }
+
+        protected void KeyDown(KeyboardEventArgs e)
+        {
+            if (currentTool == "selector" && SelectedRoom != null)
+            {
+                switch (e.Key)
+                {
+                    case "ArrowLeft":
+                        SelectedRoom.RelativePosition.X--;
+                        break;
+                    case "ArrowRight":
+                        SelectedRoom.RelativePosition.X++;
+                        break;
+                    case "ArrowUp":
+                        SelectedRoom.RelativePosition.Y--;
+                        break;
+                    case "ArrowDown":
+                        SelectedRoom.RelativePosition.Y++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         protected void MouseOver(MouseEventArgs e, int x, int y)
         {
             if (currentTool == "new-room")
@@ -220,6 +253,10 @@ namespace Pungeon.Web.Pages
                         connectorId1 = null;
                     }
                 }
+            }
+            else if (currentTool == "selector")
+            {
+                SelectedRoom = Dungeon.ToGrid()[x,y].ParentRoom;
             }
         }
 

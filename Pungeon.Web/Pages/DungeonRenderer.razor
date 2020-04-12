@@ -25,17 +25,20 @@
     </div>
     <div class="col-md-7">
         <div class="btn-group btn-group-toggle py-2" data-toggle="buttons">
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-room" ? "active" : "")" @onclick="@(() => currentTool = "new-room")">
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "selector" ? "active" : "")" @onclick="@(() => ChangeTool("selector"))">
+                <span class="oi oi-location pr-1"></span>Select
+            </button>
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-room" ? "active" : "")" @onclick="@(() => ChangeTool("new-room"))">
                 <span class="oi oi-plus pr-1"></span>Room
             </button>
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connector" ? "active" : "")" @onclick="@(() => currentTool = "new-connector")">
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connector" ? "active" : "")" @onclick="@(() => ChangeTool("new-connector"))">
                 <span class="oi oi-plus pr-1"></span>Connector
             </button>
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connection" ? "active" : "")" @onclick="@(() => currentTool = "new-connection")">
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connection" ? "active" : "")" @onclick="@(() => ChangeTool("new-connection"))">
                 <span class="oi oi-plus pr-1"></span>Hallway
             </button>
         </div>
-        <div class="tile-container">
+        <div class="tile-container" @onkeydown="@KeyDown" tabindex="-1">
             @{
             Grid grid = Dungeon.ToGrid();
             int yStart = grid.GetMinimumY();
@@ -69,6 +72,10 @@
                         (dragStartX.HasValue && dragStartY.HasValue) &&
                         (System.Math.Min(dragStartX.Value, currentHoverX) <= x && x <= System.Math.Max(dragStartX.Value, currentHoverX)) &&
                         (System.Math.Min(dragStartY.Value, currentHoverY) <= y && y <= System.Math.Max(dragStartY.Value, currentHoverY)))
+                    {
+                        tileClass += " hover";
+                    }
+                    else if (SelectedRoom != null && SelectedRoom == grid[x, y].ParentRoom)
                     {
                         tileClass += " hover";
                     }
