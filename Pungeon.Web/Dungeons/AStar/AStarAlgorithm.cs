@@ -13,7 +13,7 @@ namespace Pungeon.Web.Dungeons.AStar
         {
             bool foundPath = false;
             List<Node> openList = new List<Node>();
-            List<Node> closedList = new List<Node>();
+            HashSet<(int x, int y)> closedList = new HashSet<(int x, int y)>();
             Node current = new Node
             {
                 Position = startPosition,
@@ -28,16 +28,16 @@ namespace Pungeon.Web.Dungeons.AStar
 
             while (openList.Any())
             {
-                int currentLowestCost = openList.Min(node => node.TotalCost);
-                current = openList.First(node => node.TotalCost == currentLowestCost);
+                current = openList.OrderBy(node => node.TotalCost).First();
+                int currentLowestCost = current.TotalCost;
 
-                closedList.Add(current);
+                closedList.Add((current.Position.X, current.Position.Y));
                 int removeIndex = openList.FindIndex(node =>
                     node.Position.X == current.Position.X &&
                     node.Position.Y == current.Position.Y);
                 openList.RemoveAt(removeIndex);
 
-                if (ListContainsPosition(closedList, endPosition))
+                if (closedList.Contains((endPosition.X, endPosition.Y)))
                 {
                     foundPath = true;
                     break;
@@ -49,7 +49,7 @@ namespace Pungeon.Web.Dungeons.AStar
 
                 foreach (RelativePosition position in adjacentWalkablePositions)
                 {
-                    if (!ListContainsPosition(closedList, position))
+                    if (!closedList.Contains((position.X, position.Y)))
                     {
                         if (!ListContainsPosition(openList, position))
                         {
