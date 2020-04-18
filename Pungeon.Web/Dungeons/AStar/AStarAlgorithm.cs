@@ -12,7 +12,7 @@ namespace Pungeon.Web.Dungeons.AStar
             RelativePosition endPosition)
         {
             bool foundPath = false;
-            List<Node> openList = new List<Node>();
+            Dictionary<(int x, int y), Node> openList = new Dictionary<(int x, int y), Node>();
             HashSet<(int x, int y)> closedList = new HashSet<(int x, int y)>();
             Node current = new Node
             {
@@ -24,18 +24,15 @@ namespace Pungeon.Web.Dungeons.AStar
                         endPosition),
                 Parent = null
             };
-            openList.Add(current);
+            openList.Add((current.Position.X, current.Position.Y), current);
 
             while (openList.Any())
             {
-                current = openList.OrderBy(node => node.TotalCost).First();
+                current = openList.Values.OrderBy(node => node.TotalCost).First();
                 int currentLowestCost = current.TotalCost;
 
                 closedList.Add((current.Position.X, current.Position.Y));
-                int removeIndex = openList.FindIndex(node =>
-                    node.Position.X == current.Position.X &&
-                    node.Position.Y == current.Position.Y);
-                openList.RemoveAt(removeIndex);
+                openList.Remove((current.Position.X, current.Position.Y));
 
                 if (closedList.Contains((endPosition.X, endPosition.Y)))
                 {
@@ -51,22 +48,22 @@ namespace Pungeon.Web.Dungeons.AStar
                 {
                     if (!closedList.Contains((position.X, position.Y)))
                     {
-                        if (!ListContainsPosition(openList, position))
+                        if (!(openList.ContainsKey((position.X, position.Y))))
                         {
-                            openList.Add(new Node
-                            {
-                                Position = position,
-                                RunningCost = currentLowestCost,
-                                EstimatedRemainingCost =
-                                    DistanceCalculator.GetManhattanDistance(position, endPosition),
-                                Parent = current
-                            });
+                            openList.Add(
+                                (position.X, position.Y),
+                                new Node
+                                {
+                                    Position = position,
+                                    RunningCost = currentLowestCost,
+                                    EstimatedRemainingCost =
+                                        DistanceCalculator.GetManhattanDistance(position, endPosition),
+                                    Parent = current
+                                });
                         }
                         else
                         {
-                            Node adjacentNode = openList.Single(node =>
-                                node.Position.X == position.X &&
-                                node.Position.Y == position.Y);
+                            Node adjacentNode = openList[(position.X, position.Y)];
 
                             if (currentLowestCost + adjacentNode.EstimatedRemainingCost < adjacentNode.TotalCost)
                             {
@@ -109,13 +106,6 @@ namespace Pungeon.Web.Dungeons.AStar
             {
                 adjacentWalkablePositions.Add(new RelativePosition(newX, newY));
             }
-        }
-
-        private static bool ListContainsPosition(List<Node> list, RelativePosition position)
-        {
-            return list.Any(node =>
-                node.Position.X == position.X &&
-                node.Position.Y == position.Y);
         }
 
         private static List<RelativePosition> ConstructPath(Node current)
