@@ -28,8 +28,8 @@ namespace Pungeon.Web.Dungeons.AStar
 
             while (openList.Any())
             {
-                current = openList.Values.OrderBy(node => node.TotalCost).First();
-                int currentLowestCost = current.TotalCost;
+                int currentLowestCost = openList.Values.Min(node => node.TotalCost);
+                current = openList.Values.First(node => node.TotalCost == currentLowestCost);
 
                 closedList.Add((current.Position.X, current.Position.Y));
                 openList.Remove((current.Position.X, current.Position.Y));
