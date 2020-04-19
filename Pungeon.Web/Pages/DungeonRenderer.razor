@@ -40,18 +40,17 @@
         </div>
         <div class="tile-container" @onkeydown="@KeyDown" tabindex="-1">
             @{
-            Grid grid = Dungeon.ToGrid();
-            int yStart = grid.GetMinimumY();
-            int height = grid.GetMaximumY();
-            int xStart = grid.GetMinimumX();
-            int width = grid.GetMaximumX();
+            int yStart = Grid.GetMinimumY();
+            int height = Grid.GetMaximumY();
+            int xStart = Grid.GetMinimumX();
+            int width = Grid.GetMaximumX();
             @for (int y = yStart; y <= height; y++)
             {
                 <div class='tile-row' style='width:@((width - xStart + 1) * 20)px;'>
                 @for (int x = xStart; x <= width; x++)
                 {
                     string tileClass = null;
-                    char tile = grid[x, y].Character;
+                    char tile = Grid[x, y].Character;
                     switch (tile)
                     {
                         case ' ':
@@ -75,7 +74,7 @@
                     {
                         tileClass += " hover";
                     }
-                    else if (SelectedRoom != null && SelectedRoom == grid[x, y].ParentRoom)
+                    else if (SelectedRoom != null && SelectedRoom == Grid[x, y].ParentRoom)
                     {
                         tileClass += " hover";
                     }

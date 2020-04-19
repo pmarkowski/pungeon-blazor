@@ -13,6 +13,7 @@ namespace Pungeon.Web.Pages
         protected string ErrorMessage = string.Empty;
 
         protected Dungeon Dungeon;
+        protected Grid Grid;
 
         protected string currentTool = "new-room";
 
@@ -103,6 +104,7 @@ namespace Pungeon.Web.Pages
             try
             {
                 ErrorMessage = string.Empty;
+                Grid = Dungeon.ToGrid();
             }
             catch (Exception e)
             {
@@ -116,6 +118,7 @@ namespace Pungeon.Web.Pages
             {
                 string dungeonJson = args.Value.ToString();
                 Dungeon = System.Text.Json.JsonSerializer.Deserialize<Dungeon>(dungeonJson);
+                Grid = Dungeon.ToGrid();
                 ErrorMessage = string.Empty;
             }
             catch (Exception e)
@@ -151,6 +154,7 @@ namespace Pungeon.Web.Pages
                     default:
                         break;
                 }
+                Grid = Dungeon.ToGrid();
             }
         }
 
@@ -205,6 +209,7 @@ namespace Pungeon.Web.Pages
                         }
                     }
                 });
+                Grid = Dungeon.ToGrid();
 
                 dragStartX = null;
                 dragStartY = null;
@@ -226,6 +231,7 @@ namespace Pungeon.Web.Pages
                         dungeonSpaceY - offset.Y
                     )
                 });
+                Grid = Dungeon.ToGrid();
             }
             else if (currentTool == "new-connection")
             {
@@ -247,6 +253,7 @@ namespace Pungeon.Web.Pages
                             ConnectorId1 = connectorId1,
                             ConnectorId2 = connectorId2
                         });
+                        Grid = Dungeon.ToGrid();
 
                         connector1X = null;
                         connector1Y = null;
@@ -256,7 +263,7 @@ namespace Pungeon.Web.Pages
             }
             else if (currentTool == "selector")
             {
-                SelectedRoom = Dungeon.ToGrid()[x,y].ParentRoom;
+                SelectedRoom = Grid[x,y].ParentRoom;
             }
         }
 
