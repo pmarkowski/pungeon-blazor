@@ -6,11 +6,5 @@ namespace Pungeon.Web.Dungeons
     {
         public RelativePosition RelativePosition { get; set; }
         public Size Size { get; set; }
-        public List<Connector> Connectors { get; set; }
-
-        public Space()
-        {
-            Connectors = new List<Connector>();
-        }
     }
 }

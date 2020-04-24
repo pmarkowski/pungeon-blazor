@@ -49,15 +49,7 @@ namespace Pungeon.Web.Pages
                                 new Space()
                                 {
                                     RelativePosition = new RelativePosition(6, 4),
-                                    Size = new Size(7, 9),
-                                    Connectors = new List<Connector>()
-                                    {
-                                        new Connector()
-                                        {
-                                            Id = "Connector1",
-                                            RelativePosition = new RelativePosition(7, 3)
-                                        }
-                                    }
+                                    Size = new Size(7, 9)
                                 }
                             }
                         }
@@ -77,26 +69,10 @@ namespace Pungeon.Web.Pages
                                 new Space()
                                 {
                                     RelativePosition = new RelativePosition(6, 3),
-                                    Size = new Size(4, 9),
-                                    Connectors = new List<Connector>()
-                                    {
-                                        new Connector()
-                                        {
-                                            Id = "Connector2",
-                                            RelativePosition = new RelativePosition(2, 9)
-                                        }
-                                    }
+                                    Size = new Size(4, 9)
                                 }
                             }
                         }
-                    }
-                },
-                Connections = new List<Connection>()
-                {
-                    new Connection()
-                    {
-                        ConnectorId1 = "Connector1",
-                        ConnectorId2 = "Connector2"
                     }
                 }
             };
@@ -214,132 +190,10 @@ namespace Pungeon.Web.Pages
                 dragStartX = null;
                 dragStartY = null;
             }
-            else if (currentTool == "new-connector")
-            {
-                int dungeonSpaceX = x;
-                int dungeonSpaceY = y;
-
-                Space space = GetClosestSpaceToPoint(dungeonSpaceX, dungeonSpaceY);
-
-                RelativePosition offset = GetDungeonSpaceOffsetForSpace(space);
-
-                space.Connectors.Add(new Connector()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    RelativePosition = new RelativePosition(
-                        dungeonSpaceX - offset.X,
-                        dungeonSpaceY - offset.Y
-                    )
-                });
-                Grid = Dungeon.ToGrid();
-            }
-            else if (currentTool == "new-connection")
-            {
-                string connectorId = GetConnectorIdAt(x, y);
-                if (!string.IsNullOrWhiteSpace(connectorId))
-                {
-                    if (string.IsNullOrWhiteSpace(connectorId1))
-                    {
-                        connector1X = x;
-                        connector1Y = y;
-                        connectorId1 = connectorId;
-                    }
-                    else
-                    {
-                        string connectorId2 = connectorId;
-
-                        Dungeon.Connections.Add(new Connection()
-                        {
-                            ConnectorId1 = connectorId1,
-                            ConnectorId2 = connectorId2
-                        });
-                        Grid = Dungeon.ToGrid();
-
-                        connector1X = null;
-                        connector1Y = null;
-                        connectorId1 = null;
-                    }
-                }
-            }
             else if (currentTool == "selector")
             {
-                SelectedRoom = Grid[x,y].ParentRoom;
+                SelectedRoom = Grid[x, y].ParentRoom;
             }
-        }
-
-        private string GetConnectorIdAt(int dungeonSpaceX, int dungeonSpaceY)
-        {
-            return Dungeon.Rooms.SelectMany(room =>
-                room.Room.Spaces.SelectMany(space =>
-                    space.Connectors.Select(connector =>
-                        new Connector
-                        {
-                            Id = connector.Id,
-                            RelativePosition = new RelativePosition(
-                                connector.RelativePosition.X + space.RelativePosition.X + room.RelativePosition.X,
-                                connector.RelativePosition.Y + space.RelativePosition.Y + room.RelativePosition.Y
-                            )
-                        })))
-                .SingleOrDefault(connector => connector.RelativePosition.X == dungeonSpaceX &&
-                    connector.RelativePosition.Y == dungeonSpaceY)
-                ?.Id;
-        }
-
-        private Space GetClosestSpaceToPoint(int dungeonSpaceX, int dungeonSpaceY)
-        {
-            RelativePosition pointPosition = new RelativePosition(dungeonSpaceX, dungeonSpaceY);
-            var spaceList = Dungeon.Rooms.SelectMany(room =>
-                room.Room.Spaces.Select(space =>
-                    new
-                    {
-                        Space = space,
-                        SpaceOffset = new RelativePosition(
-                            room.RelativePosition.X + space.RelativePosition.X,
-                            room.RelativePosition.Y + space.RelativePosition.Y
-                        )
-                    }));
-
-            Space minSpace = null;
-            int minDistance = int.MaxValue;
-            foreach (var space in spaceList)
-            {
-                int minX, minY, maxX, maxY;
-                minX = space.SpaceOffset.X;
-                minY = space.SpaceOffset.Y;
-                maxX = minX + space.Space.Size.Width;
-                maxY = minY + space.Space.Size.Height;
-                int localMinDistance = int.MaxValue;
-
-                localMinDistance = Math.Min(localMinDistance, DistanceCalculator.GetManhattanDistance(pointPosition, new RelativePosition(minX, minY)));
-                localMinDistance = Math.Min(localMinDistance, DistanceCalculator.GetManhattanDistance(pointPosition, new RelativePosition(minX, maxY)));
-                localMinDistance = Math.Min(localMinDistance, DistanceCalculator.GetManhattanDistance(pointPosition, new RelativePosition(maxX, minY)));
-                localMinDistance = Math.Min(localMinDistance, DistanceCalculator.GetManhattanDistance(pointPosition, new RelativePosition(maxX, maxY)));
-
-                if (localMinDistance < minDistance)
-                {
-                    minDistance = localMinDistance;
-                    minSpace = space.Space;
-                }
-            }
-
-            return minSpace;
-        }
-
-        private RelativePosition GetDungeonSpaceOffsetForSpace(Space space)
-        {
-            var spaceWithOffset = Dungeon.Rooms.SelectMany(room =>
-                room.Room.Spaces.Select(space =>
-                    new
-                    {
-                        Space = space,
-                        SpaceOffset = new RelativePosition(
-                            room.RelativePosition.X + space.RelativePosition.X,
-                            room.RelativePosition.Y + space.RelativePosition.Y
-                        )
-                    }))
-                .Single(spaceWithOffset => spaceWithOffset.Space == space);
-
-            return spaceWithOffset.SpaceOffset;
         }
     }
 }
