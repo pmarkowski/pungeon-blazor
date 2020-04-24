@@ -165,8 +165,8 @@ namespace Pungeon.Web.Pages
                 int endY = y;
 
                 RelativePosition topLeft = new RelativePosition(
-                    System.Math.Min(dragStartX.Value, endX),
-                    System.Math.Min(dragStartY.Value, endY)
+                    Math.Min(dragStartX.Value, endX),
+                    Math.Min(dragStartY.Value, endY)
                 );
                 Dungeon.Rooms.Add(new DungeonRoom
                 {
@@ -179,8 +179,8 @@ namespace Pungeon.Web.Pages
                             {
                                 RelativePosition = new RelativePosition(0, 0),
                                 Size = new Size(
-                                    System.Math.Abs(endX - dragStartX.Value) + 1,
-                                    System.Math.Abs(endY - dragStartY.Value) + 1)
+                                    Math.Abs(endX - dragStartX.Value) + 1,
+                                    Math.Abs(endY - dragStartY.Value) + 1)
                             }
                         }
                     }
