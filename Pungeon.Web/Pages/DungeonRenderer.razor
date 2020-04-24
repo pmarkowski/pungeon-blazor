@@ -10,11 +10,19 @@
     </div>
 }
 
-<div class="row">
-    <div class="col-md-5 form-group">
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" id="dungeon-editor-tab" data-toggle="tab" href="#dungeon-editor">Dungeon Editor</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="json-editor-tab" data-toggle="tab" href="#json-editor">JSON Editor</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane form-group" id="json-editor">
         <textarea
             class="form-control text-monospace"
-            style="width:100%; height: 100%;"
+            style="width:100%; height: 80vh;"
             @oninput="RenderDungeon"
             spellcheck="false">@System.Text.Json.JsonSerializer.Serialize(
                     @Dungeon, new System.Text.Json.JsonSerializerOptions()
@@ -23,19 +31,13 @@
                     })
         </textarea>
     </div>
-    <div class="col-md-7">
+    <div class="tab-pane show active" id="dungeon-editor">
         <div class="btn-group btn-group-toggle py-2" data-toggle="buttons">
             <button data-toggle="button" class="btn btn-secondary @(currentTool == "selector" ? "active" : "")" @onclick="@(() => ChangeTool("selector"))">
                 <span class="oi oi-location pr-1"></span>Select
             </button>
             <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-room" ? "active" : "")" @onclick="@(() => ChangeTool("new-room"))">
                 <span class="oi oi-plus pr-1"></span>Room
-            </button>
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connector" ? "active" : "")" @onclick="@(() => ChangeTool("new-connector"))">
-                <span class="oi oi-plus pr-1"></span>Connector
-            </button>
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-connection" ? "active" : "")" @onclick="@(() => ChangeTool("new-connection"))">
-                <span class="oi oi-plus pr-1"></span>Hallway
             </button>
         </div>
         <div class="tile-container" @onkeydown="@KeyDown" tabindex="-1">
@@ -62,13 +64,9 @@
                         case '#':
                             tileClass = "full";
                             break;
-                        case '+':
-                            tileClass = "connector";
-                            break;
                     }
 
-                    if (connector1X == x && connector1Y == y ||
-                        (dragStartX.HasValue && dragStartY.HasValue) &&
+                    if ((dragStartX.HasValue && dragStartY.HasValue) &&
                         (System.Math.Min(dragStartX.Value, currentHoverX) <= x && x <= System.Math.Max(dragStartX.Value, currentHoverX)) &&
                         (System.Math.Min(dragStartY.Value, currentHoverY) <= y && y <= System.Math.Max(dragStartY.Value, currentHoverY)))
                     {
