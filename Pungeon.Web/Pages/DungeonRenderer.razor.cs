@@ -22,10 +22,6 @@ namespace Pungeon.Web.Pages
         protected int? dragStartX;
         protected int? dragStartY;
 
-        protected int? connector1X;
-        protected int? connector1Y;
-        protected string connectorId1;
-
         protected override void OnInitialized()
         {
             Dungeon = new Dungeon()
