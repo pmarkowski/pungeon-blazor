@@ -107,19 +107,32 @@ namespace Pungeon.Web.Pages
         {
             if (currentTool == "selector" && SelectedRoom != null)
             {
+                RelativePosition newPosition;
                 switch (e.Key)
                 {
                     case "ArrowLeft":
-                        SelectedRoom.RelativePosition.X--;
+                        newPosition = new RelativePosition(
+                            SelectedRoom.RelativePosition.X - 1,
+                            SelectedRoom.RelativePosition.Y);
+                        Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
                         break;
                     case "ArrowRight":
-                        SelectedRoom.RelativePosition.X++;
+                        newPosition = new RelativePosition(
+                            SelectedRoom.RelativePosition.X + 1,
+                            SelectedRoom.RelativePosition.Y);
+                        Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
                         break;
                     case "ArrowUp":
-                        SelectedRoom.RelativePosition.Y--;
+                        newPosition = new RelativePosition(
+                            SelectedRoom.RelativePosition.X,
+                            SelectedRoom.RelativePosition.Y - 1);
+                        Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
                         break;
                     case "ArrowDown":
-                        SelectedRoom.RelativePosition.Y++;
+                        newPosition = new RelativePosition(
+                            SelectedRoom.RelativePosition.X,
+                            SelectedRoom.RelativePosition.Y + 1);
+                        Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
                         break;
                     case "Delete":
                         Dungeon.RemoveRoom(SelectedRoom.Room.Id);

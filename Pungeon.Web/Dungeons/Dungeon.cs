@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pungeon.Web.Dungeons
 {
@@ -86,6 +87,11 @@ namespace Pungeon.Web.Dungeons
         {
             int removalIndex = Rooms.FindIndex(room => room.Room.Id == roomId);
             Rooms.RemoveAt(removalIndex);
+        }
+
+        public void SetRoomPosition(Guid roomId, RelativePosition newPosition)
+        {
+            Rooms.Single(room => room.Room.Id == roomId).RelativePosition = newPosition;
         }
     }
 }
