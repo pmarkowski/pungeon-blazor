@@ -74,7 +74,7 @@ namespace Pungeon.Web.Pages
             try
             {
                 ErrorMessage = string.Empty;
-                Grid = Dungeon.ToGrid();
+                Grid = new Grid(Dungeon);
             }
             catch (Exception e)
             {
@@ -88,7 +88,7 @@ namespace Pungeon.Web.Pages
             {
                 string dungeonJson = args.Value.ToString();
                 Dungeon = System.Text.Json.JsonSerializer.Deserialize<Dungeon>(dungeonJson);
-                Grid = Dungeon.ToGrid();
+                Grid = new Grid(Dungeon);
                 ErrorMessage = string.Empty;
             }
             catch (Exception e)
@@ -140,7 +140,7 @@ namespace Pungeon.Web.Pages
                     default:
                         break;
                 }
-                Grid = Dungeon.ToGrid();
+                Grid = new Grid(Dungeon);
             }
         }
 
@@ -195,7 +195,7 @@ namespace Pungeon.Web.Pages
                         }
                     }
                 });
-                Grid = Dungeon.ToGrid();
+                Grid = new Grid(Dungeon);
 
                 dragStartX = null;
                 dragStartY = null;
