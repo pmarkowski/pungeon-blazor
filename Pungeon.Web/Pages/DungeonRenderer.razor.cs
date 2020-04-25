@@ -121,6 +121,9 @@ namespace Pungeon.Web.Pages
                     case "ArrowDown":
                         SelectedRoom.RelativePosition.Y++;
                         break;
+                    case "Delete":
+                        Dungeon.RemoveRoom(SelectedRoom.Room.Id);
+                        break;
                     default:
                         break;
                 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Pungeon.Web.Dungeons
@@ -79,6 +80,12 @@ namespace Pungeon.Web.Dungeons
                     };
                 }
             }
+        }
+
+        public void RemoveRoom(Guid roomId)
+        {
+            int removalIndex = Rooms.FindIndex(room => room.Room.Id == roomId);
+            Rooms.RemoveAt(removalIndex);
         }
     }
 }

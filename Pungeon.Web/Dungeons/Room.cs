@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,10 +6,12 @@ namespace Pungeon.Web.Dungeons
 {
     public class Room
     {
+        public Guid Id { get; }
         public List<Space> Spaces { get; set; }
 
         public Room()
         {
+            Id = Guid.NewGuid();
             Spaces = new List<Space>();
         }
 
