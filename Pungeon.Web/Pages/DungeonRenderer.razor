@@ -1,6 +1,7 @@
 ﻿@inherits DungeonRendererBase
 @page "/"
 @using Pungeon.Web.Dungeons
+@using Pungeon.Web.ViewUtilities
 
 @if (!string.IsNullOrWhiteSpace(ErrorMessage))
 {
@@ -83,6 +84,10 @@
                         @onmouseover="@(e => MouseOver(e, currentX, currentY))"></div>
                 }
                 </div>
+            }
+            @foreach (WallSegment wall in Dungeon.Walls)
+            {
+                @LineDivCreator.CreateLine(wall.Start.X * 20, wall.Start.Y * 20, wall.End.X * 20, wall.End.Y * 20)
             }
             }
         </div>

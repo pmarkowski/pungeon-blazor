@@ -8,11 +8,13 @@ namespace Pungeon.Web.Dungeons
     {
         public Size Size { get; set; }
         public List<Space> Spaces { get; set; }
+        public List<WallSegment> Walls { get; set; }
 
         public Dungeon()
         {
             Size = new Size(0, 0);
             Spaces = new List<Space>();
+            Walls = new List<WallSegment>();
         }
 
         public void RemoveSpace(Guid spaceId)

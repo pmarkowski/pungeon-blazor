@@ -50,6 +50,14 @@ namespace Pungeon.Web.Pages
                         Position = new Position(21, 19),
                         Size = new Size(4, 9)
                     }
+                },
+                Walls = new List<WallSegment>()
+                {
+                    new WallSegment()
+                    {
+                        Start = new Position(3, 3),
+                        End = new Position(3, 5)
+                    }
                 }
             };
 
