@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Pungeon.Web.Dungeons;
@@ -12,6 +13,7 @@ namespace Pungeon.Web.Pages
 
         protected Dungeon Dungeon;
         protected Grid Grid;
+        protected string DungeonJson;
 
         protected string currentTool = "new-space";
 
@@ -54,7 +56,7 @@ namespace Pungeon.Web.Pages
             try
             {
                 ErrorMessage = string.Empty;
-                Grid = new Grid(Dungeon);
+                UpdateDungeon();
             }
             catch (Exception e)
             {
@@ -62,13 +64,24 @@ namespace Pungeon.Web.Pages
             }
         }
 
+        private void UpdateDungeon()
+        {
+            Grid = new Grid(Dungeon);
+            DungeonJson = JsonSerializer.Serialize(
+                Dungeon,
+                new JsonSerializerOptions()
+                {
+                    WriteIndented = true
+                });
+        }
+
         protected void RenderDungeon(ChangeEventArgs args)
         {
             try
             {
                 string dungeonJson = args.Value.ToString();
-                Dungeon = System.Text.Json.JsonSerializer.Deserialize<Dungeon>(dungeonJson);
-                Grid = new Grid(Dungeon);
+                Dungeon = JsonSerializer.Deserialize<Dungeon>(dungeonJson);
+                UpdateDungeon();
                 ErrorMessage = string.Empty;
             }
             catch (Exception e)
@@ -121,7 +134,7 @@ namespace Pungeon.Web.Pages
                     default:
                         break;
                 }
-                Grid = new Grid(Dungeon);
+                UpdateDungeon();
             }
         }
 
@@ -167,7 +180,7 @@ namespace Pungeon.Web.Pages
                             Math.Abs(endX - dragStartX.Value) + 1,
                             Math.Abs(endY - dragStartY.Value) + 1)
                     });
-                Grid = new Grid(Dungeon);
+                UpdateDungeon();
 
                 dragStartX = null;
                 dragStartY = null;
