@@ -157,7 +157,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseDown(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-space")
+            if (currentTool == "new-space" || currentTool == "new-wall")
             {
                 dragStartX = x;
                 dragStartY = y;
@@ -188,6 +188,34 @@ namespace Pungeon.Web.Pages
                             Math.Abs(endX - dragStartX.Value) + 1,
                             Math.Abs(endY - dragStartY.Value) + 1)
                     });
+                UpdateDungeon();
+
+                dragStartX = null;
+                dragStartY = null;
+            }
+            else if (currentTool == "new-wall")
+            {
+                if (!dragStartX.HasValue || !dragStartY.HasValue)
+                {
+                    return;
+                }
+
+                int endX = x;
+                int endY = y;
+
+                Position topLeft = new Position(
+                    Math.Min(dragStartX.Value, endX),
+                    Math.Min(dragStartY.Value, endY)
+                );
+                Position bottomRight = new Position(
+                     Math.Max(dragStartX.Value, endX),
+                     Math.Max(dragStartY.Value, endY)
+                 );
+                Dungeon.Walls.Add(new WallSegment
+                {
+                    Start = topLeft,
+                    End = bottomRight
+                });
                 UpdateDungeon();
 
                 dragStartX = null;

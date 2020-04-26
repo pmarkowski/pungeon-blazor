@@ -36,6 +36,9 @@
             <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-space" ? "active" : "")" @onclick="@(() => ChangeTool("new-space"))">
                 <span class="oi oi-plus pr-1"></span>Space
             </button>
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-wall" ? "active" : "")" @onclick="@(() => ChangeTool("new-wall"))">
+                <span class="oi oi-plus pr-1"></span>Wall
+            </button>
         </div>
         <div class="tile-container" @onkeydown="@KeyDown" tabindex="-1">
             @{
