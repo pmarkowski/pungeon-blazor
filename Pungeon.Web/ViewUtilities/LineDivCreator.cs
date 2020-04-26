@@ -24,14 +24,14 @@ namespace Pungeon.Web.ViewUtilities
 
         private static RenderFragment CreateLineElement(double x, int y, double length, double angle)
         {
-            string styles = "width: " + length + "px; "
+            string styles = "width: " + (length + 4) + "px; "
                + "-moz-transform: rotate(" + angle + "rad); "
                + "-webkit-transform: rotate(" + angle + "rad); "
                + "-o-transform: rotate(" + angle + "rad); "  
                + "-ms-transform: rotate(" + angle + "rad); "  
                + "position: absolute; "
                + "top: " + y + "px; "
-               + "left: " + x + "px; ";
+               + "left: " + (x-2) + "px; ";
 
             RenderFragment lineElement;
             lineElement = renderBuilder =>
