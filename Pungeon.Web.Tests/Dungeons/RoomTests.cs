@@ -9,7 +9,7 @@ namespace Pungeon.Web.Tests.Dungeons
         [Fact]
         public void GetHeight_OverlappingSpaces_ReturnsLargestHeight()
         {
-            RelativePosition zeroPosition = new RelativePosition(0, 0);
+            Position zeroPosition = new Position(0, 0);
             Room room = new Room()
             {
                 Spaces = new List<Space>
@@ -46,17 +46,17 @@ namespace Pungeon.Web.Tests.Dungeons
                 {
                     new Space
                     {
-                        RelativePosition = new RelativePosition(8, 9),
+                        RelativePosition = new Position(8, 9),
                         Size = new Size(2, 3)
                     },
                     new Space
                     {
-                        RelativePosition = new RelativePosition(4, 5),
+                        RelativePosition = new Position(4, 5),
                         Size = new Size(3, 4)
                     },
                     new Space
                     {
-                        RelativePosition = new RelativePosition(0, 0),
+                        RelativePosition = new Position(0, 0),
                         Size = new Size(4, 5)
                     }
                 }
@@ -80,7 +80,7 @@ namespace Pungeon.Web.Tests.Dungeons
         [Fact]
         public void GetWidth_OverlappingSpaces_ReturnsLargestWidth()
         {
-            RelativePosition zeroPosition = new RelativePosition(0, 0);
+            Position zeroPosition = new Position(0, 0);
             Room room = new Room()
             {
                 Spaces = new List<Space>
@@ -117,17 +117,17 @@ namespace Pungeon.Web.Tests.Dungeons
                 {
                     new Space
                     {
-                        RelativePosition = new RelativePosition(8, 9),
+                        RelativePosition = new Position(8, 9),
                         Size = new Size(2, 3)
                     },
                     new Space
                     {
-                        RelativePosition = new RelativePosition(4, 5),
+                        RelativePosition = new Position(4, 5),
                         Size = new Size(3, 4)
                     },
                     new Space
                     {
-                        RelativePosition = new RelativePosition(0, 0),
+                        RelativePosition = new Position(0, 0),
                         Size = new Size(4, 5)
                     }
                 }

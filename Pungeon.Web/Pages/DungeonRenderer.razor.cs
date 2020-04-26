@@ -30,19 +30,19 @@ namespace Pungeon.Web.Pages
                 {
                     new DungeonRoom()
                     {
-                        RelativePosition = new RelativePosition(1, 1),
+                        RelativePosition = new Position(1, 1),
                         Room = new Room()
                         {
                             Spaces = new List<Space>()
                             {
                                 new Space()
                                 {
-                                    RelativePosition = new RelativePosition(1, 1),
+                                    RelativePosition = new Position(1, 1),
                                     Size = new Size(5, 5)
                                 },
                                 new Space()
                                 {
-                                    RelativePosition = new RelativePosition(6, 4),
+                                    RelativePosition = new Position(6, 4),
                                     Size = new Size(7, 9)
                                 }
                             }
@@ -50,19 +50,19 @@ namespace Pungeon.Web.Pages
                     },
                     new DungeonRoom()
                     {
-                        RelativePosition = new RelativePosition(15, 16),
+                        RelativePosition = new Position(15, 16),
                         Room = new Room()
                         {
                             Spaces = new List<Space>()
                             {
                                 new Space()
                                 {
-                                    RelativePosition = new RelativePosition(0, 0),
+                                    RelativePosition = new Position(0, 0),
                                     Size = new Size(6, 7)
                                 },
                                 new Space()
                                 {
-                                    RelativePosition = new RelativePosition(6, 3),
+                                    RelativePosition = new Position(6, 3),
                                     Size = new Size(4, 9)
                                 }
                             }
@@ -107,29 +107,29 @@ namespace Pungeon.Web.Pages
         {
             if (currentTool == "selector" && SelectedRoom != null)
             {
-                RelativePosition newPosition;
+                Position newPosition;
                 switch (e.Key)
                 {
                     case "ArrowLeft":
-                        newPosition = new RelativePosition(
+                        newPosition = new Position(
                             SelectedRoom.RelativePosition.X - 1,
                             SelectedRoom.RelativePosition.Y);
                         Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
                         break;
                     case "ArrowRight":
-                        newPosition = new RelativePosition(
+                        newPosition = new Position(
                             SelectedRoom.RelativePosition.X + 1,
                             SelectedRoom.RelativePosition.Y);
                         Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
                         break;
                     case "ArrowUp":
-                        newPosition = new RelativePosition(
+                        newPosition = new Position(
                             SelectedRoom.RelativePosition.X,
                             SelectedRoom.RelativePosition.Y - 1);
                         Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
                         break;
                     case "ArrowDown":
-                        newPosition = new RelativePosition(
+                        newPosition = new Position(
                             SelectedRoom.RelativePosition.X,
                             SelectedRoom.RelativePosition.Y + 1);
                         Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
@@ -174,7 +174,7 @@ namespace Pungeon.Web.Pages
                 int endX = x;
                 int endY = y;
 
-                RelativePosition topLeft = new RelativePosition(
+                Position topLeft = new Position(
                     Math.Min(dragStartX.Value, endX),
                     Math.Min(dragStartY.Value, endY)
                 );
@@ -187,7 +187,7 @@ namespace Pungeon.Web.Pages
                         {
                             new Space()
                             {
-                                RelativePosition = new RelativePosition(0, 0),
+                                RelativePosition = new Position(0, 0),
                                 Size = new Size(
                                     Math.Abs(endX - dragStartX.Value) + 1,
                                     Math.Abs(endY - dragStartY.Value) + 1)

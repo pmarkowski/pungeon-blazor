@@ -57,7 +57,7 @@ namespace Pungeon.Web.Dungeons
                 HollowOutSpaceInGrid(
                     new Space()
                     {
-                        RelativePosition = new RelativePosition(
+                        RelativePosition = new Position(
                             space.RelativePosition.X - 1,
                             space.RelativePosition.Y - 1
                         ),

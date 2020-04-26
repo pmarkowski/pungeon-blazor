@@ -21,7 +21,7 @@ namespace Pungeon.Web.Dungeons
             Rooms.RemoveAt(removalIndex);
         }
 
-        public void SetRoomPosition(Guid roomId, RelativePosition newPosition)
+        public void SetRoomPosition(Guid roomId, Position newPosition)
         {
             Rooms.Single(room => room.Room.Id == roomId).RelativePosition = newPosition;
         }
