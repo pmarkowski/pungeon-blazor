@@ -43,49 +43,36 @@ namespace Pungeon.Web.Dungeons
 
         private void FillGrid(Dungeon dungeon)
         {
-            foreach (DungeonRoom room in dungeon.Rooms)
-            {
-                HollowOutRoomInGrid(room);
-            }
-        }
-
-        private void HollowOutRoomInGrid(DungeonRoom room)
-        {
-            // outline spaces with walls
-            foreach (Space space in room.Room.Spaces)
+            foreach (Space space in dungeon.Spaces)
             {
                 HollowOutSpaceInGrid(
                     new Space()
                     {
-                        RelativePosition = new Position(
-                            space.RelativePosition.X - 1,
-                            space.RelativePosition.Y - 1
+                        Position = new Position(
+                            space.Position.X - 1,
+                            space.Position.Y - 1
                         ),
                         Size = new Size(
                             space.Size.Width + 2,
                             space.Size.Height + 2
                         )
                     },
-                    room.RelativePosition.X,
-                    room.RelativePosition.Y,
                     '|',
-                    room);
+                    space.Id);
             }
-            foreach (Space space in room.Room.Spaces)
+            foreach (Space space in dungeon.Spaces)
             {
                 HollowOutSpaceInGrid(
                     space,
-                    room.RelativePosition.X,
-                    room.RelativePosition.Y,
                     ' ',
-                    room);
+                    space.Id);
             }
         }
 
-        private void HollowOutSpaceInGrid(Space space, int xOffset, int yOffset, char fill, DungeonRoom parentRoom)
+        private void HollowOutSpaceInGrid(Space space, char fill, Guid parentSpaceId)
         {
-            int yStart = yOffset + space.RelativePosition.Y;
-            int xStart = xOffset + space.RelativePosition.X;
+            int yStart = space.Position.Y;
+            int xStart = space.Position.X;
 
             for (int y = yStart; y < yStart + space.Size.Height; y++)
             {
@@ -95,7 +82,7 @@ namespace Pungeon.Web.Dungeons
                     _grid[(x, y)] = new Tile
                     {
                         Character = fill,
-                        ParentRoom = parentRoom
+                        ParentSpaceId = parentSpaceId
                     };
                 }
             }
