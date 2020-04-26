@@ -26,7 +26,7 @@ namespace Pungeon.Web.Dungeons
             Spaces.Single(space => space.Id == spaceId).Position = newPosition;
         }
 
-        internal Space GetSpace(Guid spaceId)
+        public Space GetSpace(Guid spaceId)
         {
             return Spaces.Single(space => space.Id == spaceId);
         }
