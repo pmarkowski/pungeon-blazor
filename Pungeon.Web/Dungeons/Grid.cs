@@ -36,10 +36,10 @@ namespace Pungeon.Web.Dungeons
             }
         }
         
-        public int GetMinimumY() => Math.Min(0, _grid.Keys.Where(coord => _grid[coord].Character != '#').Min(coord => coord.y));
-        public int GetMaximumY() => Math.Max(_minimumSize.Height, _grid.Keys.Where(coord => _grid[coord].Character != '#').Max(coord => coord.y));
-        public int GetMinimumX() => Math.Min(0, _grid.Keys.Where(coord => _grid[coord].Character != '#').Min(coord => coord.x));
-        public int GetMaximumX() => Math.Max(_minimumSize.Width, _grid.Keys.Where(coord => _grid[coord].Character != '#').Max(coord => coord.x));
+        public int GetMinimumY() => Math.Min(0, _grid.Keys.Where(coord => _grid[coord].Character != '#').Select(coord => (int?)coord.y).Min() ?? 0);
+        public int GetMaximumY() => Math.Max(_minimumSize.Height, _grid.Keys.Where(coord => _grid[coord].Character != '#').Select(coord => (int?)coord.y).Max() ?? _minimumSize.Height);
+        public int GetMinimumX() => Math.Min(0, _grid.Keys.Where(coord => _grid[coord].Character != '#').Select(coord => (int?)coord.x).Min() ?? 0);
+        public int GetMaximumX() => Math.Max(_minimumSize.Width, _grid.Keys.Where(coord => _grid[coord].Character != '#').Select(coord => (int?)coord.x).Max() ?? _minimumSize.Width);
 
         private void FillGrid(Dungeon dungeon)
         {
