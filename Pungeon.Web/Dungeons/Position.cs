@@ -1,15 +1,15 @@
 namespace Pungeon.Web.Dungeons
 {
-    public class RelativePosition
+    public class Position
     {
         public int X { get; set; }
         public int Y { get; set; }
 
-        public RelativePosition()
+        public Position()
         {
         }
 
-        public RelativePosition(int x, int y)
+        public Position(int x, int y)
         {
             this.X = x;
             this.Y = y;

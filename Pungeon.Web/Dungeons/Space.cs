@@ -1,8 +1,11 @@
+using System;
+
 namespace Pungeon.Web.Dungeons
 {
     public class Space
     {
-        public RelativePosition RelativePosition { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public Position Position { get; set; }
         public Size Size { get; set; }
     }
 }

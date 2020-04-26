@@ -36,8 +36,8 @@
             <button data-toggle="button" class="btn btn-secondary @(currentTool == "selector" ? "active" : "")" @onclick="@(() => ChangeTool("selector"))">
                 <span class="oi oi-location pr-1"></span>Select
             </button>
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-room" ? "active" : "")" @onclick="@(() => ChangeTool("new-room"))">
-                <span class="oi oi-plus pr-1"></span>Room
+            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-space" ? "active" : "")" @onclick="@(() => ChangeTool("new-space"))">
+                <span class="oi oi-plus pr-1"></span>Space
             </button>
         </div>
         <div class="tile-container" @onkeydown="@KeyDown" tabindex="-1">
@@ -72,7 +72,7 @@
                     {
                         tileClass += " hover";
                     }
-                    else if (SelectedRoom != null && SelectedRoom == Grid[x, y].ParentRoom)
+                    else if (SelectedElementId.HasValue && SelectedElementId == Grid[x, y].ParentSpaceId)
                     {
                         tileClass += " hover";
                     }

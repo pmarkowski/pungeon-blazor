@@ -7,23 +7,28 @@ namespace Pungeon.Web.Dungeons
     public class Dungeon
     {
         public Size Size { get; set; }
-        public List<DungeonRoom> Rooms { get; set; }
+        public List<Space> Spaces { get; set; }
 
         public Dungeon()
         {
             Size = new Size(0, 0);
-            Rooms = new List<DungeonRoom>();
+            Spaces = new List<Space>();
         }
 
-        public void RemoveRoom(Guid roomId)
+        public void RemoveSpace(Guid spaceId)
         {
-            int removalIndex = Rooms.FindIndex(room => room.Room.Id == roomId);
-            Rooms.RemoveAt(removalIndex);
+            int removalIndex = Spaces.FindIndex(space => space.Id == spaceId);
+            Spaces.RemoveAt(removalIndex);
         }
 
-        public void SetRoomPosition(Guid roomId, RelativePosition newPosition)
+        public void SetSpacePosition(Guid spaceId, Position newPosition)
         {
-            Rooms.Single(room => room.Room.Id == roomId).RelativePosition = newPosition;
+            Spaces.Single(space => space.Id == spaceId).Position = newPosition;
+        }
+
+        internal Space GetSpace(Guid spaceId)
+        {
+            return Spaces.Single(space => space.Id == spaceId);
         }
     }
 }

@@ -13,9 +13,9 @@ namespace Pungeon.Web.Pages
         protected Dungeon Dungeon;
         protected Grid Grid;
 
-        protected string currentTool = "new-room";
+        protected string currentTool = "new-space";
 
-        protected DungeonRoom SelectedRoom;
+        protected Guid? SelectedElementId;
 
         protected int currentHoverX;
         protected int currentHoverY;
@@ -26,47 +26,27 @@ namespace Pungeon.Web.Pages
         {
             Dungeon = new Dungeon()
             {
-                Rooms = new List<DungeonRoom>()
+                Spaces = new List<Space>()
                 {
-                    new DungeonRoom()
+                    new Space()
                     {
-                        RelativePosition = new RelativePosition(1, 1),
-                        Room = new Room()
-                        {
-                            Spaces = new List<Space>()
-                            {
-                                new Space()
-                                {
-                                    RelativePosition = new RelativePosition(1, 1),
-                                    Size = new Size(5, 5)
-                                },
-                                new Space()
-                                {
-                                    RelativePosition = new RelativePosition(6, 4),
-                                    Size = new Size(7, 9)
-                                }
-                            }
-                        }
+                        Position = new Position(1, 1),
+                        Size = new Size(5, 5)
                     },
-                    new DungeonRoom()
+                    new Space()
                     {
-                        RelativePosition = new RelativePosition(15, 16),
-                        Room = new Room()
-                        {
-                            Spaces = new List<Space>()
-                            {
-                                new Space()
-                                {
-                                    RelativePosition = new RelativePosition(0, 0),
-                                    Size = new Size(6, 7)
-                                },
-                                new Space()
-                                {
-                                    RelativePosition = new RelativePosition(6, 3),
-                                    Size = new Size(4, 9)
-                                }
-                            }
-                        }
+                        Position = new Position(6, 4),
+                        Size = new Size(7, 9)
+                    },
+                    new Space()
+                    {
+                        Position = new Position(15, 15),
+                        Size = new Size(6, 7)
+                    },
+                    new Space()
+                    {
+                        Position = new Position(21, 19),
+                        Size = new Size(4, 9)
                     }
                 }
             };
@@ -99,43 +79,44 @@ namespace Pungeon.Web.Pages
 
         protected void ChangeTool(string newTool)
         {
-            SelectedRoom = null;
+            SelectedElementId = null;
             currentTool = newTool;
         }
 
         protected void KeyDown(KeyboardEventArgs e)
         {
-            if (currentTool == "selector" && SelectedRoom != null)
+            if (currentTool == "selector" && SelectedElementId.HasValue)
             {
-                RelativePosition newPosition;
+                Space selectedSpace = Dungeon.GetSpace(SelectedElementId.Value);
+                Position newPosition;
                 switch (e.Key)
                 {
                     case "ArrowLeft":
-                        newPosition = new RelativePosition(
-                            SelectedRoom.RelativePosition.X - 1,
-                            SelectedRoom.RelativePosition.Y);
-                        Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
+                        newPosition = new Position(
+                            selectedSpace.Position.X - 1,
+                            selectedSpace.Position.Y);
+                        Dungeon.SetSpacePosition(selectedSpace.Id, newPosition);
                         break;
                     case "ArrowRight":
-                        newPosition = new RelativePosition(
-                            SelectedRoom.RelativePosition.X + 1,
-                            SelectedRoom.RelativePosition.Y);
-                        Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
+                        newPosition = new Position(
+                            selectedSpace.Position.X + 1,
+                            selectedSpace.Position.Y);
+                        Dungeon.SetSpacePosition(selectedSpace.Id, newPosition);
                         break;
                     case "ArrowUp":
-                        newPosition = new RelativePosition(
-                            SelectedRoom.RelativePosition.X,
-                            SelectedRoom.RelativePosition.Y - 1);
-                        Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
+                        newPosition = new Position(
+                            selectedSpace.Position.X,
+                            selectedSpace.Position.Y - 1);
+                        Dungeon.SetSpacePosition(selectedSpace.Id, newPosition);
                         break;
                     case "ArrowDown":
-                        newPosition = new RelativePosition(
-                            SelectedRoom.RelativePosition.X,
-                            SelectedRoom.RelativePosition.Y + 1);
-                        Dungeon.SetRoomPosition(SelectedRoom.Room.Id, newPosition);
+                        newPosition = new Position(
+                            selectedSpace.Position.X,
+                            selectedSpace.Position.Y + 1);
+                        Dungeon.SetSpacePosition(selectedSpace.Id, newPosition);
                         break;
                     case "Delete":
-                        Dungeon.RemoveRoom(SelectedRoom.Room.Id);
+                        Dungeon.RemoveSpace(selectedSpace.Id);
                         break;
                     default:
                         break;
@@ -146,7 +127,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseOver(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-room")
+            if (currentTool == "new-space")
             {
                 currentHoverX = x;
                 currentHoverY = y;
@@ -155,7 +136,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseDown(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-room")
+            if (currentTool == "new-space")
             {
                 dragStartX = x;
                 dragStartY = y;
@@ -164,7 +145,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseUp(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-room")
+            if (currentTool == "new-space")
             {
                 if (!dragStartX.HasValue || !dragStartY.HasValue)
                 {
@@ -174,27 +155,18 @@ namespace Pungeon.Web.Pages
                 int endX = x;
                 int endY = y;
 
-                RelativePosition topLeft = new RelativePosition(
+                Position topLeft = new Position(
                     Math.Min(dragStartX.Value, endX),
                     Math.Min(dragStartY.Value, endY)
                 );
-                Dungeon.Rooms.Add(new DungeonRoom
-                {
-                    RelativePosition = topLeft,
-                    Room = new Room
+                Dungeon.Spaces.Add(
+                    new Space()
                     {
-                        Spaces = new List<Space>()
-                        {
-                            new Space()
-                            {
-                                RelativePosition = new RelativePosition(0, 0),
-                                Size = new Size(
-                                    Math.Abs(endX - dragStartX.Value) + 1,
-                                    Math.Abs(endY - dragStartY.Value) + 1)
-                            }
-                        }
-                    }
-                });
+                        Position = topLeft,
+                        Size = new Size(
+                            Math.Abs(endX - dragStartX.Value) + 1,
+                            Math.Abs(endY - dragStartY.Value) + 1)
+                    });
                 Grid = new Grid(Dungeon);
 
                 dragStartX = null;
@@ -202,7 +174,7 @@ namespace Pungeon.Web.Pages
             }
             else if (currentTool == "selector")
             {
-                SelectedRoom = Grid[x, y].ParentRoom;
+                SelectedElementId = Grid[x, y].ParentSpaceId;
             }
         }
     }
