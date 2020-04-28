@@ -148,7 +148,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseOver(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-space")
+            if (currentTool == "new-space" || currentTool == "new-wall")
             {
                 currentHoverX = x;
                 currentHoverY = y;
@@ -203,18 +203,18 @@ namespace Pungeon.Web.Pages
                 int endX = x;
                 int endY = y;
 
-                Position topLeft = new Position(
-                    Math.Min(dragStartX.Value, endX),
-                    Math.Min(dragStartY.Value, endY)
+                Position start = new Position(
+                    dragStartX.Value,
+                    dragStartY.Value
                 );
-                Position bottomRight = new Position(
-                     Math.Max(dragStartX.Value, endX),
-                     Math.Max(dragStartY.Value, endY)
+                Position end = new Position(
+                    endX,
+                    endY
                  );
                 Dungeon.Walls.Add(new WallSegment
                 {
-                    Start = topLeft,
-                    End = bottomRight
+                    Start = start,
+                    End = end
                 });
                 UpdateDungeon();
 
