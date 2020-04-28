@@ -50,6 +50,14 @@ namespace Pungeon.Web.Pages
                         Position = new Position(21, 19),
                         Size = new Size(4, 9)
                     }
+                },
+                Walls = new List<WallSegment>()
+                {
+                    new WallSegment()
+                    {
+                        Start = new Position(3, 3),
+                        End = new Position(3, 5)
+                    }
                 }
             };
 
@@ -140,7 +148,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseOver(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-space")
+            if (currentTool == "new-space" || currentTool == "new-wall")
             {
                 currentHoverX = x;
                 currentHoverY = y;
@@ -149,7 +157,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseDown(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-space")
+            if (currentTool == "new-space" || currentTool == "new-wall")
             {
                 dragStartX = x;
                 dragStartY = y;
@@ -180,6 +188,34 @@ namespace Pungeon.Web.Pages
                             Math.Abs(endX - dragStartX.Value) + 1,
                             Math.Abs(endY - dragStartY.Value) + 1)
                     });
+                UpdateDungeon();
+
+                dragStartX = null;
+                dragStartY = null;
+            }
+            else if (currentTool == "new-wall")
+            {
+                if (!dragStartX.HasValue || !dragStartY.HasValue)
+                {
+                    return;
+                }
+
+                int endX = x;
+                int endY = y;
+
+                Position start = new Position(
+                    dragStartX.Value,
+                    dragStartY.Value
+                );
+                Position end = new Position(
+                    endX,
+                    endY
+                 );
+                Dungeon.Walls.Add(new WallSegment
+                {
+                    Start = start,
+                    End = end
+                });
                 UpdateDungeon();
 
                 dragStartX = null;
