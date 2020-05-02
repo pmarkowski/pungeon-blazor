@@ -4,6 +4,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Pungeon.Web.Dungeons;
+using Pungeon.Web.ViewUtilities;
 
 namespace Pungeon.Web.Pages
 {
@@ -15,7 +16,7 @@ namespace Pungeon.Web.Pages
         protected Grid Grid;
         protected string DungeonJson;
 
-        protected string currentTool = "new-space";
+        protected ToolType currentTool;
 
         protected Guid? SelectedElementId;
 
@@ -72,7 +73,7 @@ namespace Pungeon.Web.Pages
             }
         }
 
-        private void UpdateDungeon()
+        protected void UpdateDungeon()
         {
             Grid = new Grid(Dungeon);
             DungeonJson = JsonSerializer.Serialize(
@@ -98,7 +99,7 @@ namespace Pungeon.Web.Pages
             }
         }
 
-        protected void ChangeTool(string newTool)
+        protected void ChangeTool(ToolType newTool)
         {
             SelectedElementId = null;
             currentTool = newTool;
@@ -106,7 +107,7 @@ namespace Pungeon.Web.Pages
 
         protected void KeyDown(KeyboardEventArgs e)
         {
-            if (currentTool == "selector" && SelectedElementId.HasValue)
+            if (currentTool == ToolType.Selector && SelectedElementId.HasValue)
             {
                 Space selectedSpace = Dungeon.GetSpace(SelectedElementId.Value);
                 Position newPosition;
@@ -138,6 +139,7 @@ namespace Pungeon.Web.Pages
                         break;
                     case "Delete":
                         Dungeon.RemoveSpace(selectedSpace.Id);
+                        SelectedElementId = null;
                         break;
                     default:
                         break;
@@ -148,7 +150,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseOver(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-space" || currentTool == "new-wall")
+            if (currentTool == ToolType.NewSpace || currentTool == ToolType.NewWall)
             {
                 currentHoverX = x;
                 currentHoverY = y;
@@ -157,7 +159,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseDown(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-space" || currentTool == "new-wall")
+            if (currentTool == ToolType.NewSpace || currentTool == ToolType.NewWall)
             {
                 dragStartX = x;
                 dragStartY = y;
@@ -166,7 +168,7 @@ namespace Pungeon.Web.Pages
 
         protected void MouseUp(MouseEventArgs e, int x, int y)
         {
-            if (currentTool == "new-space")
+            if (currentTool == ToolType.NewSpace)
             {
                 if (!dragStartX.HasValue || !dragStartY.HasValue)
                 {
@@ -193,7 +195,7 @@ namespace Pungeon.Web.Pages
                 dragStartX = null;
                 dragStartY = null;
             }
-            else if (currentTool == "new-wall")
+            else if (currentTool == ToolType.NewWall)
             {
                 if (!dragStartX.HasValue || !dragStartY.HasValue)
                 {
@@ -221,7 +223,7 @@ namespace Pungeon.Web.Pages
                 dragStartX = null;
                 dragStartY = null;
             }
-            else if (currentTool == "selector")
+            else if (currentTool == ToolType.Selector)
             {
                 SelectedElementId = Grid[x, y].ParentSpaceId;
             }

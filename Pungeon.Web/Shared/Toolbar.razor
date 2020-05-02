@@ -1,0 +1,24 @@
+﻿@using Pungeon.Web.ViewUtilities
+
+<div class="btn-group btn-group-toggle py-2" data-toggle="buttons">
+    <button data-toggle="button" class="btn btn-secondary @(currentTool == ToolType.Selector ? "active" : "")" @onclick="@(async () => await ChangeToolAsync(ToolType.Selector))">
+        <span class="oi oi-location pr-1"></span>Select
+    </button>
+    <button data-toggle="button" class="btn btn-secondary @(currentTool == ToolType.NewSpace ? "active" : "")" @onclick="@(async () => await ChangeToolAsync(ToolType.NewSpace))">
+        <span class="oi oi-plus pr-1"></span>Space
+    </button>
+    <button data-toggle="button" class="btn btn-secondary @(currentTool == ToolType.NewWall ? "active" : "")" @onclick="@(async () => await ChangeToolAsync(ToolType.NewWall))">
+        <span class="oi oi-plus pr-1"></span>Wall
+    </button>
+</div>
+
+@code {
+    private ToolType currentTool;
+    [Parameter] public EventCallback<ToolType> OnToolSelect { get; set; }
+
+    private async Task ChangeToolAsync(ToolType tool)
+    {
+        currentTool = tool;
+        await OnToolSelect.InvokeAsync(tool);
+    }
+}

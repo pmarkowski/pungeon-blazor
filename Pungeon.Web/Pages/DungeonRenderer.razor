@@ -29,76 +29,71 @@
         </textarea>
     </div>
     <div class="tab-pane show active" id="dungeon-editor">
-        <div class="btn-group btn-group-toggle py-2" data-toggle="buttons">
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "selector" ? "active" : "")" @onclick="@(() => ChangeTool("selector"))">
-                <span class="oi oi-location pr-1"></span>Select
-            </button>
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-space" ? "active" : "")" @onclick="@(() => ChangeTool("new-space"))">
-                <span class="oi oi-plus pr-1"></span>Space
-            </button>
-            <button data-toggle="button" class="btn btn-secondary @(currentTool == "new-wall" ? "active" : "")" @onclick="@(() => ChangeTool("new-wall"))">
-                <span class="oi oi-plus pr-1"></span>Wall
-            </button>
-        </div>
-        <div class="tile-container" @onkeydown="@KeyDown" tabindex="-1">
-            @{
-            int yStart = Grid.GetMinimumY();
-            int height = Grid.GetMaximumY();
-            int xStart = Grid.GetMinimumX();
-            int width = Grid.GetMaximumX();
-            @for (int y = yStart; y <= height; y++)
-            {
-                <div class='tile-row'>
-                @for (int x = xStart; x <= width; x++)
+        <Toolbar OnToolSelect="@ChangeTool" />
+        <div class="row">
+            <div class="tile-container col-md-9" @onkeydown="@KeyDown" tabindex="-1">
+                @{
+                int yStart = Grid.GetMinimumY();
+                int height = Grid.GetMaximumY();
+                int xStart = Grid.GetMinimumX();
+                int width = Grid.GetMaximumX();
+                @for (int y = yStart; y <= height; y++)
                 {
-                    string tileClass = null;
-                    char tile = Grid[x, y].Character;
-                    switch (tile)
+                    <div class='tile-row'>
+                    @for (int x = xStart; x <= width; x++)
                     {
-                        case ' ':
-                            tileClass = "empty";
-                            break;
-                        case '|':
-                            tileClass = "wall";
-                            break;
-                        case '#':
-                            tileClass = "full";
-                            break;
-                    }
+                        string tileClass = null;
+                        char tile = Grid[x, y].Character;
+                        switch (tile)
+                        {
+                            case ' ':
+                                tileClass = "empty";
+                                break;
+                            case '|':
+                                tileClass = "wall";
+                                break;
+                            case '#':
+                                tileClass = "full";
+                                break;
+                        }
 
-                    if (currentTool == "new-space" &&
-                        (dragStartX.HasValue && dragStartY.HasValue) &&
-                        (System.Math.Min(dragStartX.Value, currentHoverX) <= x && x <= System.Math.Max(dragStartX.Value, currentHoverX)) &&
-                        (System.Math.Min(dragStartY.Value, currentHoverY) <= y && y <= System.Math.Max(dragStartY.Value, currentHoverY)))
-                    {
-                        tileClass += " hover";
-                    }
-                    else if (SelectedElementId.HasValue && SelectedElementId == Grid[x, y].ParentSpaceId)
-                    {
-                        tileClass += " hover";
-                    }
+                        if (currentTool == ToolType.NewSpace &&
+                            (dragStartX.HasValue && dragStartY.HasValue) &&
+                            (System.Math.Min(dragStartX.Value, currentHoverX) <= x && x <= System.Math.Max(dragStartX.Value, currentHoverX)) &&
+                            (System.Math.Min(dragStartY.Value, currentHoverY) <= y && y <= System.Math.Max(dragStartY.Value, currentHoverY)))
+                        {
+                            tileClass += " hover";
+                        }
+                        else if (SelectedElementId.HasValue && SelectedElementId == Grid[x, y].ParentSpaceId)
+                        {
+                            tileClass += " hover";
+                        }
 
-                    int currentX = x;
-                    int currentY = y;
-                    <div
-                        style='position: absolute; left: @((currentX - xStart) * 20)px; top: @((currentY - yStart) * 20)px;'
-                        class='tile @(tileClass)'
-                        @onmousedown="@(e => MouseDown(e, currentX, currentY))"
-                        @onmouseup="@(e => MouseUp(e, currentX, currentY))"
-                        @onmouseover="@(e => MouseOver(e, currentX, currentY))"></div>
+                        int currentX = x;
+                        int currentY = y;
+                        <div
+                            style='position: absolute; left: @((currentX - xStart) * 20)px; top: @((currentY - yStart) * 20)px;'
+                            class='tile @(tileClass)'
+                            @onmousedown="@(e => MouseDown(e, currentX, currentY))"
+                            @onmouseup="@(e => MouseUp(e, currentX, currentY))"
+                            @onmouseover="@(e => MouseOver(e, currentX, currentY))"></div>
+                    }
+                    </div>
                 }
-                </div>
-            }
-            @foreach (WallSegment wall in Dungeon.Walls)
-            {
-                @LineDivCreator.CreateLine(wall.Start.X * 20, wall.Start.Y * 20, wall.End.X * 20, wall.End.Y * 20)
-            }
-            @if (currentTool == "new-wall" &&
-                (dragStartX.HasValue && dragStartY.HasValue))
-            {
-                @LineDivCreator.CreateLine(dragStartX.Value * 20, dragStartY.Value * 20, currentHoverX * 20, currentHoverY * 20)
-            }
-            }
+                @foreach (WallSegment wall in Dungeon.Walls)
+                {
+                    @LineDivCreator.CreateLine(wall.Start.X * 20, wall.Start.Y * 20, wall.End.X * 20, wall.End.Y * 20)
+                }
+                @if (currentTool == ToolType.NewWall &&
+                    (dragStartX.HasValue && dragStartY.HasValue))
+                {
+                    @LineDivCreator.CreateLine(dragStartX.Value * 20, dragStartY.Value * 20, currentHoverX * 20, currentHoverY * 20)
+                }
+                }
+            </div>
+            <div class="property-editor col-md-3">
+                <PropertyEditor @bind-SelectedId="@SelectedElementId" Dungeon="@Dungeon" DungeonChanged="UpdateDungeon" />
+            </div>
         </div>
     </div>
 </div>
