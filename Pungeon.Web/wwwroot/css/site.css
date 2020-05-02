@@ -114,12 +114,13 @@ app {
 .validation-message {
     color: red;
 }
-
-.tile-container {
-    position: absolute;
+.property-editor {
+    height: 75vh;
+    overflow-y: scroll;
 }
-
-.tile-row {
+.tile-container  {
+    height: 75vh;
+    overflow: scroll;
 }
 
     .tile-row .tile {

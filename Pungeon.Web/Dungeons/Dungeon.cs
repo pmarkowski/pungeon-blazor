@@ -28,6 +28,11 @@ namespace Pungeon.Web.Dungeons
             Spaces.Single(space => space.Id == spaceId).Position = newPosition;
         }
 
+        public void SetSpaceSize(Guid spaceId, Size newSize)
+        {
+            Spaces.Single(space => space.Id == spaceId).Size = newSize;
+        }
+
         public Space GetSpace(Guid spaceId)
         {
             return Spaces.Single(space => space.Id == spaceId);

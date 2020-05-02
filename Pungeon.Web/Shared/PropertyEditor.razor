@@ -1,0 +1,100 @@
+﻿@using Pungeon.Web.Dungeons
+
+@if (!SelectedId.HasValue)
+{
+    <p>Nothing currently selected.</p> 
+}
+else
+{
+    <div class="card my-1">
+        <div class="card-body form-group">
+            <h5 class="card-title">Space</h5>
+            <label>Id: <input class="form-control" type="text" readonly value="@SelectedId"></label>
+        </div>
+    </div>
+    <div class="card my-1">
+        <div class="card-body form-group">
+            <h5 class="card-title">Position</h5>
+            <label>X: <input class="form-control" type="number" required value="@selectedSpace.Position.X" @onchange="UpdateXAsync"></label>
+            <label>Y: <input class="form-control" type="number" required value="@selectedSpace.Position.Y" @onchange="UpdateYAsync"></label>
+        </div>
+    </div>
+    <div class="card my-1">
+        <div class="card-body form-group">
+            <h5 class="card-title">Size</h5>
+            <label>Width: <input class="form-control" type="number" value="@selectedSpace.Size.Width" @onchange="UpdateWidthAsync"></label>
+            <label>Height: <input class="form-control" type="number" value="@selectedSpace.Size.Height" @onchange="UpdateHeightAsync"></label>
+        </div>
+    </div>
+    <div class="card my-1">
+        <div class="card-body form-group">
+            <h5 class="card-title">Danger Zone</h5>
+            <input class="btn btn-outline-danger" value="Delete" type="button" @onclick="DeleteAsync">
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public Guid? SelectedId { get; set; }
+
+    [Parameter] public EventCallback<Guid?> SelectedIdChanged { get; set; }
+
+    [Parameter] public Dungeon Dungeon { get; set; }
+
+    [Parameter] public EventCallback DungeonChanged { get; set; }
+
+    private Space selectedSpace;
+
+    protected override void OnParametersSet()
+    {
+        if (SelectedId.HasValue)
+        {
+            selectedSpace = Dungeon.GetSpace(SelectedId.Value);
+        }
+    }
+
+    protected async Task UpdateXAsync(ChangeEventArgs e)
+    {
+        int newX = Convert.ToInt32(e.Value);
+        Dungeon.SetSpacePosition(
+            SelectedId.Value,
+            new Position(newX, selectedSpace.Position.Y));
+        await DungeonChanged.InvokeAsync(Dungeon);
+    }
+    protected async Task UpdateYAsync(ChangeEventArgs e)
+    {
+        int newY = Convert.ToInt32(e.Value);
+        Dungeon.SetSpacePosition(
+            SelectedId.Value,
+            new Position(selectedSpace.Position.X, newY));
+        await DungeonChanged.InvokeAsync(Dungeon);
+    }
+
+    protected async Task UpdateWidthAsync(ChangeEventArgs e)
+    {
+        int newWidth = Convert.ToInt32(e.Value);
+        Dungeon.SetSpaceSize(
+            SelectedId.Value,
+            new Size(newWidth, selectedSpace.Size.Height)
+        );
+        await DungeonChanged.InvokeAsync(Dungeon);
+    }
+
+    protected async Task UpdateHeightAsync(ChangeEventArgs e)
+    {
+        int newHeight = Convert.ToInt32(e.Value);
+        Dungeon.SetSpaceSize(
+            SelectedId.Value,
+            new Size(selectedSpace.Size.Width, newHeight)
+        );
+        await DungeonChanged.InvokeAsync(Dungeon);
+    }
+
+    protected async Task DeleteAsync()
+    {
+        Dungeon.RemoveSpace(SelectedId.Value);
+        SelectedId = null;
+        await SelectedIdChanged.InvokeAsync(SelectedId);
+        await DungeonChanged.InvokeAsync(Dungeon);
+    }
+}
