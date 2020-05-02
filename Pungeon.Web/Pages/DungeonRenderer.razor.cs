@@ -101,8 +101,11 @@ namespace Pungeon.Web.Pages
 
         protected void ChangeTool(ToolType newTool)
         {
-            SelectedElementId = null;
-            currentTool = newTool;
+            if (newTool != currentTool)
+            {
+                SelectedElementId = null;
+                currentTool = newTool;
+            }
         }
 
         protected void KeyDown(KeyboardEventArgs e)
