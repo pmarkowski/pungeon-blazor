@@ -54,11 +54,6 @@ namespace Pungeon.Web.Pages
                 },
                 Walls = new List<WallSegment>()
                 {
-                    new WallSegment()
-                    {
-                        Start = new Position(3, 3),
-                        End = new Position(3, 5)
-                    }
                 }
             };
 
