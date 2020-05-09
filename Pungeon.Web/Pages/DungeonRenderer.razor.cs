@@ -54,9 +54,88 @@ namespace Pungeon.Web.Pages
                 },
                 Walls = new List<WallSegment>()
                 {
+                    new WallSegment()
+                    {
+                        Start = new Position(1, 1),
+                        End = new Position(1, 6)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(6, 6),
+                        End = new Position(1, 6)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(6, 13),
+                        End = new Position(6, 6)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(13, 13),
+                        End = new Position(6, 13)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(13, 4),
+                        End = new Position(13, 13)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(6, 4),
+                        End = new Position(13, 4)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(6, 1),
+                        End = new Position(6, 4)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(1, 1),
+                        End = new Position(6, 1)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(15, 15),
+                        End = new Position(15, 22)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(21, 22),
+                        End = new Position(15, 22)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(21, 15),
+                        End = new Position(15, 15)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(21, 19),
+                        End = new Position(21, 15)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(25, 19),
+                        End = new Position(21, 19)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(21, 22),
+                        End = new Position(21, 28)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(21, 28),
+                        End = new Position(25, 28)
+                    },
+                    new WallSegment()
+                    {
+                        Start = new Position(25, 19),
+                        End = new Position(25, 28)
+                    }
                 }
             };
-
             try
             {
                 ErrorMessage = string.Empty;
@@ -180,14 +259,40 @@ namespace Pungeon.Web.Pages
                     Math.Min(dragStartX.Value, endX),
                     Math.Min(dragStartY.Value, endY)
                 );
-                Dungeon.Spaces.Add(
-                    new Space()
-                    {
-                        Position = topLeft,
-                        Size = new Size(
+                Space spaceToAdd = new Space()
+                {
+                    Position = topLeft,
+                    Size = new Size(
                             Math.Abs(endX - dragStartX.Value) + 1,
                             Math.Abs(endY - dragStartY.Value) + 1)
-                    });
+                };
+                Dungeon.Spaces.Add(spaceToAdd);
+
+                // Down
+                Dungeon.Walls.Add(new WallSegment()
+                {
+                    Start = spaceToAdd.Position,
+                    End = new Position(spaceToAdd.Position.X, spaceToAdd.Position.Y + spaceToAdd.Size.Height)
+                });
+                // right
+                Dungeon.Walls.Add(new WallSegment()
+                {
+                    Start = new Position(spaceToAdd.Position.X, spaceToAdd.Position.Y + spaceToAdd.Size.Height),
+                    End = new Position(spaceToAdd.Position.X + spaceToAdd.Size.Width, spaceToAdd.Position.Y + spaceToAdd.Size.Height)
+                });
+                // up
+                Dungeon.Walls.Add(new WallSegment()
+                {
+                    Start = new Position(spaceToAdd.Position.X + spaceToAdd.Size.Width, spaceToAdd.Position.Y + spaceToAdd.Size.Height),
+                    End = new Position(spaceToAdd.Position.X + spaceToAdd.Size.Width, spaceToAdd.Position.Y)
+                });
+                // left
+                Dungeon.Walls.Add(new WallSegment()
+                {
+                    Start = new Position(spaceToAdd.Position.X + spaceToAdd.Size.Width, spaceToAdd.Position.Y),
+                    End = spaceToAdd.Position
+                });
+
                 UpdateDungeon();
 
                 dragStartX = null;
