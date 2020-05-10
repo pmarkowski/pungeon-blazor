@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixi Experiments</title>
+</head>
+
+<body>
+    <button id="toggle-move-y">Toggle Move Y</button>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+<script type="text/javascript">
+    // the redux setup
+
+    function counter(state, action) {
+        if (typeof state === 'undefined') {
+            return 0
+        }
+
+        switch (action.type) {
+            case 'TOGGLE_MOVE_Y':
+                return { ...state, moveY: !state.moveY }
+            case 'SET_POS':
+                return { ...state, x: action.x, y: action.y }
+            case 'TOGGLE_SELECT':
+                return { ...state, selected: !state.selected }
+            default:
+                return state
+        }
+    }
+
+    var store = Redux.createStore(
+        counter,
+        {
+            id: '823cc811-9499-4f3d-abeb-941d2ee4fd98',
+            moveY: false,
+            x: 0,
+            y: 0,
+            selected: false
+        },
+        typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
+
+    document.getElementById('toggle-move-y').addEventListener('click', () => {
+        store.dispatch({type: 'TOGGLE_MOVE_Y'});
+    })
+
+    // The pixi.js setup
+    let type = "WebGL"
+    if (!PIXI.utils.isWebGLSupported()) {
+        type = "canvas"
+    }
+
+    PIXI.utils.sayHello(type)
+
+    //Create a Pixi Application
+    let app = new PIXI.Application({ width: 256, height: 256 });
+    app.renderer.backgroundColor = 0x0333cc;
+
+    //Add the canvas that Pixi automatically created for you to the HTML document
+    document.body.appendChild(app.view);
+
+    // Render a circle to a texture
+    var graphics = new PIXI.Graphics();
+    graphics.beginFill(0x44FFFF);
+    graphics.drawCircle(8, 8, 8);
+    graphics.endFill();
+
+    var texture = app.renderer.generateTexture(graphics);
+
+    // Then create a sprite from the texture
+
+    var s = new PIXI.Sprite(texture);
+    s.interactive = true;
+    s.on('mouseover', () => {
+        console.log('hovered');
+    });
+    s.on('mousedown', (sp) => {
+        console.log(sp.currentTarget.id);
+        store.dispatch({
+            type: 'TOGGLE_SELECT'
+        });
+    })
+    s.id = '823cc811-9499-4f3d-abeb-941d2ee4fd98';
+    app.stage.addChild(s);
+
+    let progress = 0;
+    app.ticker.add((delta) => {
+        var state = store.getState();
+        progress += (delta * 0.1);
+
+        // var pos = Math.cos(progress);
+        s.x = state.x;
+        s.y = state.y;
+
+        
+    });
+
+    setInterval(() => {
+        var state = store.getState();
+
+        var yOffset = 0;
+        if (state.moveY) {
+            yOffset = 0.1;
+        }
+
+        store.dispatch({
+            type: 'SET_POS',
+            x: state.x + 0.1,
+            y: state.y + yOffset
+        })
+    }, 13)
+</script>
+
+</html>
