@@ -46,23 +46,6 @@ namespace Pungeon.Web.Dungeons
             foreach (Space space in dungeon.Spaces)
             {
                 HollowOutSpaceInGrid(
-                    new Space()
-                    {
-                        Position = new Position(
-                            space.Position.X - 1,
-                            space.Position.Y - 1
-                        ),
-                        Size = new Size(
-                            space.Size.Width + 2,
-                            space.Size.Height + 2
-                        )
-                    },
-                    '|',
-                    space.Id);
-            }
-            foreach (Space space in dungeon.Spaces)
-            {
-                HollowOutSpaceInGrid(
                     space,
                     ' ',
                     space.Id);
